@@ -196,36 +196,337 @@ export default function BafarAliadosDashboard() {
         * { box-sizing: border-box; }
         .bf-card { background: white; border: 1px solid ${BRAND.border}; border-radius: 14px; }
         .bf-tab-active { color: ${BRAND.ink} !important; border-bottom: 2px solid ${BRAND.red} !important; font-weight: 600 !important; }
-        .bf-btn-primary { background: ${BRAND.red}; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+        .bf-btn-primary { background: ${BRAND.red}; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.15s; min-height: 44px; }
         .bf-btn-primary:hover { background: ${BRAND.redDark}; }
         .bf-btn-primary:disabled { background: #ccc; cursor: not-allowed; }
         .bf-pill { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
         .bf-anim-fade { animation: fade 0.3s ease; }
         @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        .bf-header {
+          background: ${BRAND.red};
+          padding: 12px clamp(12px, 4vw, 28px);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          flex-wrap: wrap;
+          box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+        }
+        .bf-header-brand {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          min-width: 0;
+          flex: 1 1 180px;
+        }
+        .bf-header-brand-text { min-width: 0; }
+        .bf-header-title {
+          color: white;
+          font-weight: 700;
+          font-size: clamp(14px, 4vw, 16px);
+          letter-spacing: -0.2px;
+        }
+        .bf-header-sub {
+          color: rgba(255,255,255,0.85);
+          font-size: clamp(10px, 2.8vw, 12px);
+          line-height: 1.35;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .bf-header-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+
+        .bf-nav {
+          background: white;
+          border-bottom: 1px solid ${BRAND.border};
+          display: flex;
+          gap: 2px;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: thin;
+          padding: 0 clamp(10px, 4vw, 28px);
+          flex-wrap: nowrap;
+        }
+        .bf-nav::-webkit-scrollbar { height: 3px; }
+        .bf-nav::-webkit-scrollbar-thumb { background: ${BRAND.border}; border-radius: 3px; }
+        .bf-tab-btn {
+          flex-shrink: 0;
+          background: transparent;
+          border: none;
+          padding: 12px 12px;
+          font-size: 11px;
+          font-weight: 500;
+          border-bottom: 2px solid transparent;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-family: inherit;
+          color: ${BRAND.muted};
+          white-space: nowrap;
+          min-height: 48px;
+        }
+        @media (min-width: 640px) {
+          .bf-tab-btn { padding: 16px 16px; font-size: 13px; gap: 8px; }
+        }
+
+        .bf-main {
+          padding: clamp(12px, 4vw, 28px);
+          max-width: 1280px;
+          margin: 0 auto;
+          width: 100%;
+        }
+        .bf-footer {
+          border-top: 1px solid ${BRAND.border};
+          padding: 16px clamp(12px, 4vw, 28px);
+          text-align: center;
+          font-size: 11px;
+          color: ${BRAND.muted};
+          background: white;
+        }
+        .bf-page-title {
+          font-size: clamp(1.15rem, 4.5vw, 26px);
+          font-weight: 700;
+          margin: 0;
+          letter-spacing: -0.5px;
+          line-height: 1.2;
+        }
+        .bf-page-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 14px;
+          flex-wrap: wrap;
+          margin-bottom: 24px;
+        }
+        .bf-page-head--tight { margin-bottom: 20px; }
+
+        .bf-grid-kpi3 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          margin-bottom: 24px;
+        }
+        @media (min-width: 900px) {
+          .bf-grid-kpi3 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+          .bf-grid-kpi3 { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .bf-grid-kpi4 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          margin-bottom: 24px;
+        }
+        @media (min-width: 520px) {
+          .bf-grid-kpi4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+          .bf-grid-kpi4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .bf-grid-inv4 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          margin-bottom: 20px;
+        }
+        @media (min-width: 520px) {
+          .bf-grid-inv4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 960px) {
+          .bf-grid-inv4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .bf-grid-2eq {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+        @media (min-width: 768px) {
+          .bf-grid-2eq { grid-template-columns: 1fr 1fr; }
+        }
+
+        .bf-grid-chart-caja {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+        @media (min-width: 900px) {
+          .bf-grid-chart-caja { grid-template-columns: 1.4fr 1fr; }
+        }
+        .bf-grid-chart-caja > .bf-card {
+          min-width: 0;
+        }
+
+        .bf-grid-negocio-half {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        @media (min-width: 768px) {
+          .bf-grid-negocio-half { grid-template-columns: 1fr 1fr; }
+        }
+
+        .bf-grid-cards3 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        @media (min-width: 520px) {
+          .bf-grid-cards3 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 960px) {
+          .bf-grid-cards3 { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .bf-grid-academy-videos {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        @media (min-width: 520px) {
+          .bf-grid-academy-videos { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 960px) {
+          .bf-grid-academy-videos { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .bf-grid-cart {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        @media (min-width: 960px) {
+          .bf-grid-cart { grid-template-columns: 1fr 320px; }
+          .bf-cart-sticky { position: sticky; top: 16px; height: fit-content; }
+        }
+
+        .bf-grid-hero {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          align-items: center;
+          margin-bottom: 24px;
+        }
+        @media (min-width: 720px) {
+          .bf-grid-hero { grid-template-columns: 1fr auto; gap: 24px; }
+        }
+
+        .bf-grid-alert {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+          align-items: stretch;
+        }
+        .bf-grid-alert > button {
+          width: 100%;
+          justify-self: stretch;
+        }
+        @media (min-width: 640px) {
+          .bf-grid-alert {
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: center;
+          }
+          .bf-grid-alert > button { width: auto; justify-self: end; }
+        }
+
+        .bf-chart-scroll {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          margin: 0;
+          padding: 0 0 4px;
+        }
+        .bf-chart-bars {
+          display: flex;
+          align-items: flex-end;
+          gap: 8px;
+          height: 180px;
+          padding-bottom: 24px;
+          position: relative;
+          min-width: 340px;
+        }
+        @media (min-width: 640px) {
+          .bf-chart-bars { gap: 12px; min-width: 0; width: 100%; }
+        }
+
+        .bf-tip-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .bf-tip-row-grow { flex: 1; min-width: 0; }
+
+        .bf-modal-grid-2 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        @media (min-width: 400px) {
+          .bf-modal-grid-2 { grid-template-columns: 1fr 1fr; }
+        }
+        .bf-modal-grid-3 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        @media (min-width: 480px) {
+          .bf-modal-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+        }
+
+        .bf-pedidos-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 14px;
+          flex-wrap: wrap;
+          margin-bottom: 24px;
+        }
+        .bf-academy-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 14px;
+          flex-wrap: wrap;
+          margin-bottom: 24px;
+        }
       `}</style>
 
       {/* HEADER */}
-      <header style={{ background: BRAND.red, padding: '16px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 1px 0 rgba(0,0,0,0.05)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ height: 42, background: 'white', borderRadius: 10, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <header className="bf-header">
+        <div className="bf-header-brand">
+          <div style={{ height: 42, background: 'white', borderRadius: 10, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <img src="/bafar%20LOGO.png" alt="BAFAR" style={{ height: 30, display: 'block' }} />
           </div>
-          <div>
-            <div style={{ color: 'white', fontWeight: 700, fontSize: 16, letterSpacing: '-0.2px' }}>BAFAR Aliados</div>
-            <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 12 }}>Pizzería Don Memo · Chihuahua, Chih.</div>
+          <div className="bf-header-brand-text">
+            <div className="bf-header-title">BAFAR Aliados</div>
+            <div className="bf-header-sub">Pizzería Don Memo · Chihuahua, Chih.</div>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div className="bf-header-actions">
           <div style={{ background: 'rgba(255,255,255,0.18)', padding: '8px 14px', borderRadius: 24, color: 'white', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
             <Award size={14} />
             {puntos.toLocaleString('es-MX')} pts
           </div>
-          <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 600, fontSize: 13 }}>GM</div>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 600, fontSize: 13 }}>GM</div>
         </div>
       </header>
 
       {/* TABS */}
-      <nav style={{ background: 'white', borderBottom: `1px solid ${BRAND.border}`, padding: '0 28px', display: 'flex', gap: 4 }}>
+      <nav className="bf-nav">
         {[
           { id: 'negocio', label: 'Tablero de Control', icon: Home },
           { id: 'capturar', label: 'Capturar día', icon: ClipboardList },
@@ -239,14 +540,9 @@ export default function BafarAliadosDashboard() {
           return (
             <button
               key={t.id}
+              type="button"
               onClick={() => setTab(t.id)}
-              className={active ? 'bf-tab-active' : ''}
-              style={{
-                background: 'transparent', border: 'none', padding: '16px 18px',
-                fontSize: 13, color: BRAND.muted, fontWeight: 500,
-                borderBottom: '2px solid transparent', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'inherit'
-              }}
+              className={`bf-tab-btn${active ? ' bf-tab-active' : ''}`}
             >
               <Icon size={15} />
               {t.label}
@@ -258,7 +554,7 @@ export default function BafarAliadosDashboard() {
         })}
       </nav>
 
-      <main style={{ padding: '28px', maxWidth: 1280, margin: '0 auto' }}>
+      <main className="bf-main">
 
         {/* ============================================ */}
         {/* TAB 1: MI NEGOCIO                              */}
@@ -267,12 +563,12 @@ export default function BafarAliadosDashboard() {
           <div className="bf-anim-fade">
             <div style={{ marginBottom: 24 }}>
               <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>Lunes 6 de abril, 2026</div>
-              <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Resumen del día</h1>
+              <h1 className="bf-page-title">Resumen del día</h1>
             </div>
 
             {/* KPI CARDS */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginBottom: 24 }}>
-              <div className="bf-card" style={{ padding: 18 }}>
+            <div className="bf-grid-kpi3">
+              <div className="bf-card" style={{ padding: 22 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                   <DollarSign size={18} color={BRAND.muted} />
                   <span style={{ fontSize: 11, color: BRAND.green, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -280,43 +576,44 @@ export default function BafarAliadosDashboard() {
                   </span>
                 </div>
                 <div style={{ fontSize: 12, color: BRAND.muted }}>Ventas</div>
-                <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.5px' }}>${ventasHoy.toLocaleString('es-MX')}</div>
+                <div style={{ fontSize: 'clamp(1.25rem, 5vw, 26px)', fontWeight: 700, letterSpacing: '-0.5px' }}>${ventasHoy.toLocaleString('es-MX')}</div>
                 <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>vs ${ventasAyer.toLocaleString('es-MX')} ayer</div>
               </div>
 
-              <div className="bf-card" style={{ padding: 18 }}>
+              <div className="bf-card" style={{ padding: 22 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                   <Package size={18} color={BRAND.muted} />
                   <span style={{ fontSize: 11, color: BRAND.muted, fontWeight: 600 }}>{((costos/ventasHoy)*100).toFixed(1)}%</span>
                 </div>
                 <div style={{ fontSize: 12, color: BRAND.muted }}>Costo</div>
-                <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.5px' }}>${costos.toLocaleString('es-MX')}</div>
+                <div style={{ fontSize: 'clamp(1.25rem, 5vw, 26px)', fontWeight: 700, letterSpacing: '-0.5px' }}>${costos.toLocaleString('es-MX')}</div>
                 <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>insumos consumidos</div>
               </div>
 
-              <div className="bf-card" style={{ padding: 18 }}>
+              <div className="bf-card" style={{ padding: 22 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                   <Wallet size={18} color={BRAND.muted} />
                   <span style={{ fontSize: 11, color: BRAND.muted, fontWeight: 600 }}>{((gastos/ventasHoy)*100).toFixed(1)}%</span>
                 </div>
                 <div style={{ fontSize: 12, color: BRAND.muted }}>Gastos</div>
-                <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.5px' }}>${gastos.toLocaleString('es-MX')}</div>
+                <div style={{ fontSize: 'clamp(1.25rem, 5vw, 26px)', fontWeight: 700, letterSpacing: '-0.5px' }}>${gastos.toLocaleString('es-MX')}</div>
                 <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>renta, sueldos, luz</div>
               </div>
 
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 16, marginBottom: 16 }}>
+            <div className="bf-grid-chart-caja">
               {/* GRÁFICA SEMANA */}
               <div className="bf-card" style={{ padding: 22 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18, flexWrap: 'wrap', gap: 10 }}>
                   <div>
                     <div style={{ fontSize: 15, fontWeight: 700 }}>Ventas de la semana</div>
                     <div style={{ fontSize: 12, color: BRAND.muted }}>Total: ${VENTAS_SEMANA.reduce((s,v)=>s+v.monto,0).toLocaleString('es-MX')}</div>
                   </div>
                   <span className="bf-pill" style={{ background: BRAND.cream, color: BRAND.amber }}>ÚLTIMOS 7 DÍAS</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, height: 180, paddingBottom: 24, position: 'relative' }}>
+                <div className="bf-chart-scroll">
+                <div className="bf-chart-bars">
                   {VENTAS_SEMANA.map((v, i) => {
                     const altura = (v.monto / maxVenta) * 100;
                     const isToday = i === VENTAS_SEMANA.length - 1;
@@ -334,6 +631,7 @@ export default function BafarAliadosDashboard() {
                       </div>
                     );
                   })}
+                </div>
                 </div>
               </div>
 
@@ -369,7 +667,7 @@ export default function BafarAliadosDashboard() {
             </div>
 
             {/* INVENTARIO Y TOP PRODUCTOS */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="bf-grid-negocio-half">
               <div className="bf-card" style={{ padding: 22 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                   <div style={{ fontSize: 15, fontWeight: 700 }}>Inventario clave</div>
@@ -429,10 +727,10 @@ export default function BafarAliadosDashboard() {
         {/* ============================================ */}
         {tab === 'capturar' && (
           <div className="bf-anim-fade">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+            <div className="bf-page-head">
               <div>
                 <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>Lunes 6 de abril, 2026</div>
-                <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Capturar día</h1>
+                <h1 className="bf-page-title">Capturar día</h1>
                 <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>Registra los movimientos de hoy. Esto alimenta tu tablero automáticamente.</p>
               </div>
               <button
@@ -445,7 +743,7 @@ export default function BafarAliadosDashboard() {
             </div>
 
             {/* RESUMEN EN VIVO */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 24 }}>
+            <div className="bf-grid-kpi4">
               <div className="bf-card" style={{ padding: 16, background: '#e8f5ee', border: 'none' }}>
                 <div style={{ fontSize: 11, color: BRAND.green, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.4 }}>Ventas totales</div>
                 <div style={{ fontSize: 24, fontWeight: 700, color: BRAND.green, letterSpacing: '-0.5px', marginTop: 4 }}>${totalVentasCap.toLocaleString('es-MX')}</div>
@@ -464,9 +762,7 @@ export default function BafarAliadosDashboard() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-
-              {/* VENTAS POR CATEGORÍA */}
+            <div className="bf-grid-2eq">
               <div className="bf-card" style={{ padding: 22 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -568,7 +864,7 @@ export default function BafarAliadosDashboard() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+            <div className="bf-grid-2eq">
 
               {/* GASTOS FIJOS */}
               <div className="bf-card" style={{ padding: 22 }}>
@@ -658,11 +954,11 @@ export default function BafarAliadosDashboard() {
             </div>
 
             {/* AYUDA / TIP */}
-            <div style={{ marginTop: 8, padding: 18, background: BRAND.cream, borderRadius: 14, display: 'flex', alignItems: 'center', gap: 16, border: `1px solid ${BRAND.border}` }}>
+            <div style={{ marginTop: 8, padding: 'clamp(14px, 4vw, 18px)', background: BRAND.cream, borderRadius: 14, border: `1px solid ${BRAND.border}` }} className="bf-tip-row">
               <div style={{ width: 40, height: 40, background: BRAND.red, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Zap size={18} color="white" />
               </div>
-              <div style={{ flex: 1 }}>
+              <div className="bf-tip-row-grow">
                 <div style={{ fontSize: 13, fontWeight: 700 }}>Captura cada noche al cerrar tu negocio</div>
                 <div style={{ fontSize: 12, color: BRAND.muted, marginTop: 2 }}>2 minutos al día son suficientes. Tu tablero, tus alertas y tus puntos BAFAR se actualizan automáticamente con esta información.</div>
               </div>
@@ -676,10 +972,10 @@ export default function BafarAliadosDashboard() {
         {/* ============================================ */}
         {tab === 'inventario' && (
           <div className="bf-anim-fade">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
+            <div className="bf-page-head bf-page-head--tight">
               <div>
                 <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>Tu almacén en tiempo real</div>
-                <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Mis Inventarios</h1>
+                <h1 className="bf-page-title">Mis Inventarios</h1>
                 <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>Lo que tienes hoy en piezas. Cuando algo se ponga en rojo, te avisamos en Alertas inteligentes.</p>
               </div>
               <button
@@ -692,7 +988,7 @@ export default function BafarAliadosDashboard() {
             </div>
 
             {/* RESUMEN SEMÁFORO */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 20 }}>
+            <div className="bf-grid-inv4">
               <button onClick={() => setFiltroInv('TODOS')} className="bf-card" style={{ padding: 16, textAlign: 'left', cursor: 'pointer', fontFamily: 'inherit', outline: filtroInv === 'TODOS' ? `2px solid ${BRAND.ink}` : 'none', outlineOffset: -2, transition: 'outline 0.15s' }}>
                 <div style={{ fontSize: 11, color: BRAND.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.4 }}>Productos en inventario</div>
                 <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.5px', marginTop: 4, color: BRAND.ink }}>{inventario.length}</div>
@@ -744,8 +1040,7 @@ export default function BafarAliadosDashboard() {
               })}
             </div>
 
-            {/* GRID DE INVENTARIO */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
+            <div className="bf-grid-cards3">
               {inventarioFiltrado.map(item => {
                 const status = getInvStatus(item);
                 const color = status === 'rojo' ? BRAND.red : status === 'amarillo' ? BRAND.amber : BRAND.green;
@@ -820,9 +1115,9 @@ export default function BafarAliadosDashboard() {
         {/* ============================================ */}
         {tab === 'pedidos' && (
           <div className="bf-anim-fade">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+            <div className="bf-pedidos-head">
               <div>
-                <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Bienvenido a BAFAR</h1>
+                <h1 className="bf-page-title">Bienvenido a BAFAR</h1>
                 <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>Levanta tu pedido directamente con planta. Entrega en 24-48 hrs.</p>
               </div>
               <div style={{ background: BRAND.ink, padding: '14px 20px', borderRadius: 14, display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -835,7 +1130,7 @@ export default function BafarAliadosDashboard() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20 }}>
+            <div className="bf-grid-cart">
               {/* PRODUCTOS */}
               <div>
                 <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
@@ -849,7 +1144,7 @@ export default function BafarAliadosDashboard() {
                   ))}
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
+                <div className="bf-grid-cards3">
                   {PRODUCTOS.map(p => {
                     const qty = cart[p.id] || 0;
                     return (
@@ -889,7 +1184,7 @@ export default function BafarAliadosDashboard() {
               </div>
 
               {/* CARRITO */}
-              <div className="bf-card" style={{ padding: 20, height: 'fit-content', position: 'sticky', top: 20 }}>
+              <div className="bf-card bf-cart-sticky" style={{ padding: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
                   <ShoppingCart size={18} />
                   <div style={{ fontSize: 15, fontWeight: 700 }}>Tu pedido</div>
@@ -950,11 +1245,10 @@ export default function BafarAliadosDashboard() {
         {/* ============================================ */}
         {tab === 'academy' && (
           <div className="bf-anim-fade">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+            <div className="bf-academy-head">
               <div>
-                <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>BAFAR Academy</h1>
-                <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Users size={13} /> 3,200 aliados ya están aprendiendo · Contenido gratuito para ti
+                <h1 className="bf-page-title">BAFAR Academy</h1>
+                <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0', display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                 </p>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
@@ -969,20 +1263,20 @@ export default function BafarAliadosDashboard() {
             </div>
 
             {/* DESTACADO */}
-            <div style={{ background: `linear-gradient(135deg, ${BRAND.red} 0%, ${BRAND.redDark} 100%)`, borderRadius: 14, padding: 28, marginBottom: 24, color: 'white', display: 'grid', gridTemplateColumns: '1fr auto', gap: 24, alignItems: 'center' }}>
+            <div className="bf-grid-hero" style={{ background: `linear-gradient(135deg, ${BRAND.red} 0%, ${BRAND.redDark} 100%)`, borderRadius: 14, padding: 'clamp(18px, 5vw, 28px)', color: 'white' }}>
                 <div>
-                  <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', marginBottom: 12 }}>DESTACADO ESTA SEMANA</span>
-                  <div style={{ fontSize: 24, fontWeight: 700, margin: '8px 0', letterSpacing: '-0.5px' }}>Cómo hacer la hamburguesa perfecta</div>
+                  <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', marginBottom: 12, display: 'inline-block' }}>DESTACADO ESTA SEMANA</span>
+                  <div style={{ fontSize: 'clamp(1.1rem, 4vw, 24px)', fontWeight: 700, margin: '8px 0', letterSpacing: '-0.5px', lineHeight: 1.25 }}>Cómo hacer la hamburguesa perfecta</div>
                   <div style={{ fontSize: 13, opacity: 0.9, marginBottom: 16, maxWidth: 480 }}>
                     Aprende la técnica del Chef Roberto Méndez para lograr el sello Maillard ideal, el punto exacto de cocción y el balance perfecto entre carne, queso y aderezos.
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 12, opacity: 0.85 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 12, opacity: 0.85, flexWrap: 'wrap' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Clock size={12} /> 12:40</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Users size={12} /> 1,840 vistas</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Zap size={12} /> Nivel básico</span>
                   </div>
                 </div>
-                <button style={{ background: 'white', color: BRAND.red, border: 'none', width: 64, height: 64, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.2)' }}>
+                <button type="button" style={{ background: 'white', color: BRAND.red, border: 'none', width: 64, height: 64, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.2)', flexShrink: 0 }}>
                   <Play size={24} fill={BRAND.red} />
                 </button>
             </div>
@@ -999,8 +1293,7 @@ export default function BafarAliadosDashboard() {
               ))}
             </div>
 
-            {/* GRID DE VIDEOS */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+            <div className="bf-grid-academy-videos">
               {videosFiltrados.map(v => (
                 <div key={v.id} className="bf-card" style={{ padding: 0, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s' }}
                      onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
@@ -1031,7 +1324,7 @@ export default function BafarAliadosDashboard() {
         {tab === 'alertas' && (
           <div className="bf-anim-fade">
             <div style={{ marginBottom: 24 }}>
-              <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Alertas inteligentes</h1>
+              <h1 className="bf-page-title">Alertas inteligentes</h1>
               <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>BAFAR observa tus números y te avisa antes de que los problemas cuesten dinero.</p>
             </div>
 
@@ -1047,7 +1340,7 @@ export default function BafarAliadosDashboard() {
                   <div style={{ fontSize: 13, color: '#0a4a36' }}>Ningún producto está por debajo del mínimo. Revisa Mis Inventarios para mantenerlo así.</div>
                 </div>
               ) : invRojo.map(item => (
-                <div key={`alert-${item.id}`} style={{ background: '#fff5f5', borderLeft: `4px solid ${BRAND.red}`, borderRadius: '0 12px 12px 0', padding: '18px 22px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 16, alignItems: 'center' }}>
+                <div key={`alert-${item.id}`} className="bf-grid-alert" style={{ background: '#fff5f5', borderLeft: `4px solid ${BRAND.red}`, borderRadius: '0 12px 12px 0', padding: 'clamp(14px, 4vw, 18px) clamp(14px, 4vw, 22px)' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                       <AlertCircle size={14} color={BRAND.red} />
@@ -1070,7 +1363,7 @@ export default function BafarAliadosDashboard() {
                 <button onClick={() => setTab('academy')} style={{ background: 'white', color: BRAND.amber, border: `1px solid ${BRAND.amber}`, padding: '8px 14px', borderRadius: 8, fontWeight: 600, cursor: 'pointer', fontSize: 12 }}>Ver video →</button>
               </div>
 
-              <div style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: '18px 22px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 16, alignItems: 'center' }}>
+              <div className="bf-grid-alert" style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: 'clamp(14px, 4vw, 18px) clamp(14px, 4vw, 22px)' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                     <Award size={14} color={BRAND.green} />
@@ -1079,7 +1372,7 @@ export default function BafarAliadosDashboard() {
                   <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Tienes {puntos.toLocaleString('es-MX')} puntos sin usar</div>
                   <div style={{ fontSize: 13, color: '#0a4a36' }}>Equivalen a una caja de queso Sabori manchego gratis en tu próximo pedido. No los dejes ir.</div>
                 </div>
-                <button onClick={() => setTab('pedidos')} style={{ background: BRAND.green, color: 'white', border: 'none', padding: '10px 18px', borderRadius: 10, fontWeight: 600, cursor: 'pointer', fontSize: 13 }}>Canjear →</button>
+                <button type="button" onClick={() => setTab('pedidos')} style={{ background: BRAND.green, color: 'white', border: 'none', padding: '10px 18px', borderRadius: 10, fontWeight: 600, cursor: 'pointer', fontSize: 13 }}>Canjear →</button>
               </div>
 
               <div style={{ background: '#eef3fb', borderLeft: '4px solid #1e5fa8', borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
@@ -1092,11 +1385,11 @@ export default function BafarAliadosDashboard() {
               </div>
             </div>
 
-            <div style={{ marginTop: 28, padding: 20, background: BRAND.cream, borderRadius: 14, display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div style={{ width: 44, height: 44, background: BRAND.red, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ marginTop: 28, padding: 'clamp(14px, 4vw, 20px)', background: BRAND.cream, borderRadius: 14 }} className="bf-tip-row">
+              <div style={{ width: 44, height: 44, background: BRAND.red, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Zap size={20} color="white" />
               </div>
-              <div style={{ flex: 1 }}>
+              <div className="bf-tip-row-grow">
                 <div style={{ fontSize: 14, fontWeight: 700 }}>BAFAR convierte tus datos en decisiones</div>
                 <div style={{ fontSize: 12, color: BRAND.muted, marginTop: 2 }}>Cada minuto que un problema no se resuelve en tu negocio, te está costando dinero. Por eso te avisamos antes.</div>
               </div>
@@ -1106,15 +1399,15 @@ export default function BafarAliadosDashboard() {
       </main>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: `1px solid ${BRAND.border}`, padding: '20px 28px', textAlign: 'center', fontSize: 11, color: BRAND.muted, background: 'white' }}>
+      <footer className="bf-footer">
         BAFAR Aliados · Tu socio estratégico de cocina · v1.0 · www.bafar.com.mx
         <div style={{ marginTop: 6, fontSize: 11, fontWeight: 600, color: BRAND.ink }}>Powered by AXON B2B</div>
       </footer>
 
       {/* MODAL: NUEVO PRODUCTO */}
       {showProdModal && createPortal(
-        <div onClick={() => setShowProdModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 24, width: 400, maxWidth: 'calc(100vw - 32px)' }}>
+        <div onClick={() => setShowProdModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100%', minHeight: '100%', background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16, boxSizing: 'border-box' }}>
+          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 24, width: '100%', maxWidth: 400 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ fontSize: 16, fontWeight: 700 }}>Nuevo producto</div>
               <button onClick={() => setShowProdModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: BRAND.muted, display: 'flex', padding: 0 }}><X size={18} /></button>
@@ -1130,7 +1423,7 @@ export default function BafarAliadosDashboard() {
                   style={{ width: '100%', border: `1px solid ${BRAND.border}`, borderRadius: 8, padding: '8px 12px', fontSize: 13, outline: 'none', fontFamily: 'inherit', background: BRAND.paper, color: BRAND.ink }}
                 />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div className="bf-modal-grid-2">
                 <div>
                   <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4 }}>Costo unitario</div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: BRAND.paper, border: `1px solid ${BRAND.border}`, borderRadius: 8, padding: '8px 12px' }}>
@@ -1178,8 +1471,8 @@ export default function BafarAliadosDashboard() {
 
       {/* MODAL: NUEVO GASTO */}
       {showGastoModal && createPortal(
-        <div onClick={() => setShowGastoModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 24, width: 400, maxWidth: 'calc(100vw - 32px)' }}>
+        <div onClick={() => setShowGastoModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100%', minHeight: '100%', background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16, boxSizing: 'border-box' }}>
+          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 24, width: '100%', maxWidth: 400 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ fontSize: 16, fontWeight: 700 }}>Nuevo gasto</div>
               <button onClick={() => setShowGastoModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: BRAND.muted, display: 'flex', padding: 0 }}><X size={18} /></button>
@@ -1228,8 +1521,8 @@ export default function BafarAliadosDashboard() {
 
       {/* MODAL: NUEVO PRODUCTO DE INVENTARIO */}
       {showInvModal && createPortal(
-        <div onClick={() => setShowInvModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 24, width: 440, maxWidth: 'calc(100vw - 32px)' }}>
+        <div onClick={() => setShowInvModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100%', minHeight: '100%', background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16, boxSizing: 'border-box' }}>
+          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 24, width: '100%', maxWidth: 440 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ fontSize: 16, fontWeight: 700 }}>Agregar producto al inventario</div>
               <button onClick={() => setShowInvModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: BRAND.muted, display: 'flex', padding: 0 }}><X size={18} /></button>
@@ -1245,7 +1538,7 @@ export default function BafarAliadosDashboard() {
                   style={{ width: '100%', border: `1px solid ${BRAND.border}`, borderRadius: 8, padding: '8px 12px', fontSize: 13, outline: 'none', fontFamily: 'inherit', background: BRAND.paper, color: BRAND.ink }}
                 />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div className="bf-modal-grid-2">
                 <div>
                   <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4 }}>Marca</div>
                   <input
@@ -1267,7 +1560,7 @@ export default function BafarAliadosDashboard() {
                   </select>
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+              <div className="bf-modal-grid-3">
                 <div>
                   <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4 }}>Unidad</div>
                   <select
