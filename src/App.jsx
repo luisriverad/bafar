@@ -104,6 +104,7 @@ export default function BafarAliadosDashboard() {
     { id: 5, label: 'Bebidas', costo: 8, precio: 25, monto: 500 },
   ]);
   const [comprasBafar, setComprasBafar] = useState(1850);
+  const [comprasCarneMart, setComprasCarneMart] = useState(720);
   const [comprasOtros, setComprasOtros] = useState(1330);
   const [gastosFijos, setGastosFijos] = useState([
     { id: 1, label: 'Renta', monto: 400 },
@@ -172,7 +173,7 @@ export default function BafarAliadosDashboard() {
     : inventario.filter(i => i.categoria === filtroInv);
 
   const totalVentasCap = ventasCat.reduce((a, v) => a + v.monto, 0);
-  const totalCostosCap = comprasBafar + comprasOtros;
+  const totalCostosCap = comprasBafar + comprasCarneMart + comprasOtros;
   const totalGastosCap = gastosFijos.reduce((a, g) => a + g.monto, 0);
   const utilidadCap = totalVentasCap - totalCostosCap - totalGastosCap;
   const margenCap = totalVentasCap > 0 ? ((utilidadCap / totalVentasCap) * 100).toFixed(1) : '0.0';
@@ -215,6 +216,13 @@ export default function BafarAliadosDashboard() {
         * { box-sizing: border-box; }
         .bf-card { background: white; border: 1px solid ${BRAND.border}; border-radius: 14px; }
         .bf-tab-active { color: ${BRAND.ink} !important; border-bottom: 2px solid ${BRAND.red} !important; font-weight: 600 !important; }
+        .bf-applink { background: white; border: 1.5px solid ${BRAND.border}; border-radius: 14px; padding: 14px 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-family: inherit; color: ${BRAND.ink}; transition: all 0.15s; box-shadow: 0 1px 2px rgba(0,0,0,0.03); min-height: 92px; }
+        .bf-applink:hover { border-color: ${BRAND.red}; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+        .bf-applink-active { background: ${BRAND.red} !important; border-color: ${BRAND.red} !important; color: white !important; box-shadow: 0 4px 12px rgba(193,18,31,0.25) !important; }
+        .bf-applink-active:hover { transform: translateY(-1px); }
+        .bf-applink-icon { width: 36px; height: 36px; border-radius: 10px; background: ${BRAND.paper}; display: flex; align-items: center; justify-content: center; }
+        .bf-applink-active .bf-applink-icon { background: rgba(255,255,255,0.18); }
+        .bf-applink-label { font-size: 13px; font-weight: 600; text-align: center; line-height: 1.2; }
         .bf-btn-primary { background: ${BRAND.red}; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.15s; }
         .bf-btn-primary:hover { background: ${BRAND.redDark}; }
         .bf-btn-primary:disabled { background: #ccc; cursor: not-allowed; }
@@ -243,34 +251,33 @@ export default function BafarAliadosDashboard() {
         </div>
       </header>
 
-      {/* TABS */}
-      <nav style={{ background: 'white', borderBottom: `1px solid ${BRAND.border}`, padding: '0 28px', display: 'flex', gap: 4 }}>
-        {[
-          { id: 'negocio', label: 'Tablero de Control', icon: Home },
-          { id: 'capturar', label: 'Capturar día', icon: ClipboardList },
-          { id: 'inventario', label: 'Mis Inventarios', icon: Boxes },
-          { id: 'pedidos', label: 'Bienvenido a BAFAR', icon: ShoppingCart },
-          { id: 'academy', label: 'BAFAR Academy', icon: GraduationCap },
-        ].map(t => {
-          const Icon = t.icon;
-          const active = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={active ? 'bf-tab-active' : ''}
-              style={{
-                background: 'transparent', border: 'none', padding: '16px 18px',
-                fontSize: 13, color: BRAND.muted, fontWeight: 500,
-                borderBottom: '2px solid transparent', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'inherit'
-              }}
-            >
-              <Icon size={15} />
-              {t.label}
-            </button>
-          );
-        })}
+      {/* TABS — botones tipo app (tiles grandes, alto contraste, área táctil amplia para usuarios low-tech) */}
+      <nav style={{ background: 'white', borderBottom: `1px solid ${BRAND.border}`, padding: '18px 28px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
+          {[
+            { id: 'negocio', label: 'Tablero de Control', icon: Home },
+            { id: 'capturar', label: 'Capturar día', icon: ClipboardList },
+            { id: 'inventario', label: 'Mis Inventarios', icon: Boxes },
+            { id: 'pedidos', label: 'Bienvenido a BAFAR', icon: ShoppingCart },
+            { id: 'academy', label: 'BAFAR Academy', icon: GraduationCap },
+          ].map(t => {
+            const Icon = t.icon;
+            const active = tab === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`bf-applink ${active ? 'bf-applink-active' : ''}`}
+                aria-pressed={active}
+              >
+                <span className="bf-applink-icon">
+                  <Icon size={22} color={active ? 'white' : BRAND.red} strokeWidth={2.25} />
+                </span>
+                <span className="bf-applink-label">{t.label}</span>
+              </button>
+            );
+          })}
+        </div>
       </nav>
 
       <main style={{ padding: '28px', maxWidth: 1280, margin: '0 auto' }}>
@@ -282,7 +289,7 @@ export default function BafarAliadosDashboard() {
           <div className="bf-anim-fade">
             <div style={{ marginBottom: 24 }}>
               <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>Lunes 6 de abril, 2026</div>
-              <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Resumen del día</h1>
+              <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Hola Eugenio, este es tu resumen del día</h1>
             </div>
 
             {/* KPI CARDS */}
@@ -294,7 +301,7 @@ export default function BafarAliadosDashboard() {
                     <TrendingUp size={12} /> +{variacion}%
                   </span>
                 </div>
-                <div style={{ fontSize: 12, color: BRAND.muted }}>Ventas</div>
+                <div style={{ fontSize: 12, color: BRAND.muted }}>Tus ventas fueron de:</div>
                 <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.5px' }}>${ventasHoy.toLocaleString('es-MX')}</div>
                 <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>vs ${ventasAyer.toLocaleString('es-MX')} ayer</div>
               </div>
@@ -304,7 +311,7 @@ export default function BafarAliadosDashboard() {
                   <Package size={18} color={BRAND.muted} />
                   <span style={{ fontSize: 11, color: BRAND.muted, fontWeight: 600 }}>{((costos/ventasHoy)*100).toFixed(1)}%</span>
                 </div>
-                <div style={{ fontSize: 12, color: BRAND.muted }}>Costo</div>
+                <div style={{ fontSize: 12, color: BRAND.muted }}>Tus costos fueron de:</div>
                 <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.5px' }}>${costos.toLocaleString('es-MX')}</div>
                 <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>insumos consumidos</div>
               </div>
@@ -314,7 +321,7 @@ export default function BafarAliadosDashboard() {
                   <Wallet size={18} color={BRAND.muted} />
                   <span style={{ fontSize: 11, color: BRAND.muted, fontWeight: 600 }}>{((gastos/ventasHoy)*100).toFixed(1)}%</span>
                 </div>
-                <div style={{ fontSize: 12, color: BRAND.muted }}>Gastos</div>
+                <div style={{ fontSize: 12, color: BRAND.muted }}>Tus gastos fueron de:</div>
                 <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.5px' }}>${gastos.toLocaleString('es-MX')}</div>
                 <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>renta, sueldos, luz</div>
               </div>
@@ -387,28 +394,46 @@ export default function BafarAliadosDashboard() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div className="bf-card" style={{ padding: 22 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                  <div style={{ fontSize: 15, fontWeight: 700 }}>Inventario clave</div>
-                  <Boxes size={16} color={BRAND.muted} />
+                  <div style={{ fontSize: 15, fontWeight: 700, color: invRojo.length > 0 ? BRAND.red : BRAND.ink }}>
+                    {invRojo.length > 0 ? '¡Cuidado! Este inventario está muy bajo:' : 'Tu inventario está bien'}
+                  </div>
+                  <Boxes size={16} color={invRojo.length > 0 ? BRAND.red : BRAND.muted} />
                 </div>
-                {[
-                  { nombre: 'Carne molida BAFAR', stock: '2 kg', max: 12, actual: 2, alerta: true },
-                  { nombre: 'Queso Sabori manchego', stock: '5.4 kg', max: 12, actual: 5.4, alerta: false },
-                  { nombre: 'Jamón Burr de pavo', stock: '8 pzs', max: 12, actual: 8, alerta: false },
-                  { nombre: 'Pollo Montecillo', stock: '6 kg', max: 16, actual: 6, alerta: false },
-                ].map((item, i) => {
-                  const pct = (item.actual / item.max) * 100;
-                  return (
-                    <div key={i} style={{ marginBottom: 14 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 6 }}>
-                        <span style={{ fontWeight: 500 }}>{item.nombre}</span>
-                        <span style={{ color: item.alerta ? BRAND.red : BRAND.muted, fontWeight: 600 }}>{item.stock}</span>
-                      </div>
-                      <div style={{ background: BRAND.cream, height: 6, borderRadius: 4, overflow: 'hidden' }}>
-                        <div style={{ width: `${pct}%`, height: '100%', background: item.alerta ? BRAND.red : BRAND.green, borderRadius: 4, transition: 'width 0.3s' }} />
-                      </div>
-                    </div>
-                  );
-                })}
+                {invRojo.length === 0 ? (
+                  <div style={{ fontSize: 13, color: BRAND.muted, padding: '20px 0' }}>
+                    Ningún producto está por debajo del mínimo. ¡Buen trabajo!
+                  </div>
+                ) : (
+                  [...invRojo]
+                    .sort((a, b) => {
+                      const rank = (it) => it.esBafar ? 0 : it.esCarneMart ? 1 : 2;
+                      return rank(a) - rank(b);
+                    })
+                    .map((item, i) => {
+                      const max = item.minStock * 2;
+                      const pct = Math.min(100, (item.stock / max) * 100);
+                      const tag = item.esBafar ? 'BAFAR' : item.esCarneMart ? 'CarneMart' : null;
+                      const tagBg = item.esBafar ? BRAND.red : BRAND.amber;
+                      return (
+                        <div key={item.id} style={{ marginBottom: 14 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, marginBottom: 6, gap: 8 }}>
+                            <span style={{ fontWeight: 500, display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+                              {tag && (
+                                <span style={{ fontSize: 9, fontWeight: 700, color: 'white', background: tagBg, padding: '2px 6px', borderRadius: 4, letterSpacing: 0.3, flexShrink: 0 }}>
+                                  {tag}
+                                </span>
+                              )}
+                              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.nombre}</span>
+                            </span>
+                            <span style={{ color: BRAND.red, fontWeight: 700, flexShrink: 0 }}>{item.stock} {item.unidad}</span>
+                          </div>
+                          <div style={{ background: BRAND.cream, height: 6, borderRadius: 4, overflow: 'hidden' }}>
+                            <div style={{ width: `${pct}%`, height: '100%', background: BRAND.red, borderRadius: 4, transition: 'width 0.3s' }} />
+                          </div>
+                        </div>
+                      );
+                    })
+                )}
               </div>
 
               <div className="bf-card" style={{ padding: 22 }}>
@@ -532,7 +557,7 @@ export default function BafarAliadosDashboard() {
                   </div>
                   <div style={{ fontSize: 15, fontWeight: 700 }}>Compras de insumos</div>
                 </div>
-                <p style={{ fontSize: 12, color: BRAND.muted, margin: '0 0 16px 40px' }}>¿En qué gastaste para producir?</p>
+                <p style={{ fontSize: 12, color: BRAND.muted, margin: '0 0 16px 40px' }}>¿Cuáles fueron las compras de materia prima?</p>
 
                 <div style={{ background: BRAND.cream, borderRadius: 10, padding: 14, marginBottom: 12, border: `1px solid ${BRAND.border}` }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
@@ -548,6 +573,25 @@ export default function BafarAliadosDashboard() {
                         value={comprasBafar.toLocaleString('es-MX')}
                         onChange={e => setComprasBafar(parseInt(e.target.value.replace(/\D/g, '')) || 0)}
                         style={{ width: 90, border: 'none', background: 'transparent', fontSize: 14, fontWeight: 700, textAlign: 'right', outline: 'none', fontFamily: 'inherit', color: BRAND.red }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ background: '#eaf5e6', borderRadius: 10, padding: 14, marginBottom: 12, border: `1px solid ${BRAND.border}` }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: BRAND.green }}>Compras CarneMart</div>
+                      <div style={{ fontSize: 11, color: BRAND.muted }}>Pan, verduras, salsas, refrescos</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'white', border: `1px solid ${BRAND.border}`, borderRadius: 8, padding: '6px 12px' }}>
+                      <span style={{ fontSize: 12, color: BRAND.muted }}>$</span>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={comprasCarneMart.toLocaleString('es-MX')}
+                        onChange={e => setComprasCarneMart(parseInt(e.target.value.replace(/\D/g, '')) || 0)}
+                        style={{ width: 90, border: 'none', background: 'transparent', fontSize: 14, fontWeight: 700, textAlign: 'right', outline: 'none', fontFamily: 'inherit', color: BRAND.green }}
                       />
                     </div>
                   </div>
