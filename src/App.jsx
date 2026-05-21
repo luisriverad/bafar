@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  TrendingUp, TrendingDown, ShoppingCart, Play, Bell, Home,
+  TrendingUp, TrendingDown, ShoppingCart, Play, Home,
   Package, GraduationCap, AlertCircle, Plus, Minus, Check, X,
   DollarSign, Wallet, Boxes, Award, Clock, Users, Search,
   Filter, ChevronRight, Flame, Target, BookOpen, Zap,
@@ -75,6 +75,25 @@ export default function BafarAliadosDashboard() {
   const [puntos, setPuntos] = useState(2840);
   const [filtroVideo, setFiltroVideo] = useState('TODOS');
   const [orderConfirmed, setOrderConfirmed] = useState(false);
+  const [showSerieModal, setShowSerieModal] = useState(false);
+  const [showModeloModal, setShowModeloModal] = useState(false);
+  const [showAcademyModal, setShowAcademyModal] = useState(false);
+
+  const SERIE_ARQUITECTO = [
+    { id: 'a1', titulo: 'Introducción: construye tu propio destino', duracion: '14:30', autor: 'BAFAR Academy', nivel: 'Introducción' },
+  ];
+
+  const SERIE_MODELO = [
+    { id: 'm1', titulo: 'Fundamentos del Modelo de Gestión BAFAR', duracion: '12:20', autor: 'BAFAR Academy', nivel: 'Episodio 1' },
+    { id: 'm2', titulo: 'Cómo definir la propuesta de valor de tu negocio', duracion: '15:40', autor: 'Consultoría AXON', nivel: 'Episodio 2' },
+    { id: 'm3', titulo: 'Estructura organizacional simple para micro pymes', duracion: '17:10', autor: 'Profit Solutions', nivel: 'Episodio 3' },
+    { id: 'm4', titulo: 'Procesos clave de tu operación diaria', duracion: '19:30', autor: 'Consultoría AXON', nivel: 'Episodio 4' },
+    { id: 'm5', titulo: 'KPIs que sí importan en tu negocio', duracion: '14:55', autor: 'Profit Solutions', nivel: 'Episodio 5' },
+    { id: 'm6', titulo: 'Gestión financiera para dueños', duracion: '21:15', autor: 'Profit Solutions', nivel: 'Episodio 6' },
+    { id: 'm7', titulo: 'Control de inventarios y costos', duracion: '16:45', autor: 'Consultoría AXON', nivel: 'Episodio 7' },
+    { id: 'm8', titulo: 'Cultura y liderazgo de equipo', duracion: '18:20', autor: 'BAFAR Academy', nivel: 'Episodio 8' },
+    { id: 'm9', titulo: 'Mejora continua y escalamiento del negocio', duracion: '23:05', autor: 'Consultoría AXON', nivel: 'Episodio 9' },
+  ];
 
   // Captura del día
   const [ventasCat, setVentasCat] = useState([
@@ -116,16 +135,16 @@ export default function BafarAliadosDashboard() {
     { id: 7, nombre: 'Jamón de pavo', marca: 'BURR', categoria: 'Carnes', unidad: 'piezas', stock: 9, minStock: 6, esBafar: true },
     { id: 8, nombre: 'Queso mozzarella rallado', marca: 'SABORI', categoria: 'Lácteos', unidad: 'bolsas', stock: 12, minStock: 6, esBafar: true },
     // Pan y vegetales
-    { id: 9, nombre: 'Pan para hamburguesa', marca: 'Local', categoria: 'Pan', unidad: 'piezas', stock: 48, minStock: 30, esBafar: false },
-    { id: 10, nombre: 'Pan para hot dog', marca: 'Local', categoria: 'Pan', unidad: 'piezas', stock: 22, minStock: 25, esBafar: false },
-    { id: 11, nombre: 'Lechuga romana', marca: 'Mercado', categoria: 'Verduras', unidad: 'piezas', stock: 6, minStock: 8, esBafar: false },
-    { id: 12, nombre: 'Jitomate bola', marca: 'Mercado', categoria: 'Verduras', unidad: 'kilos', stock: 14, minStock: 10, esBafar: false },
+    { id: 9, nombre: 'Pan para hamburguesa', marca: 'Local', categoria: 'Pan', unidad: 'piezas', stock: 48, minStock: 30, esBafar: false, esCarneMart: true },
+    { id: 10, nombre: 'Pan para hot dog', marca: 'Local', categoria: 'Pan', unidad: 'piezas', stock: 22, minStock: 25, esBafar: false, esCarneMart: true },
+    { id: 11, nombre: 'Lechuga romana', marca: 'Mercado', categoria: 'Verduras', unidad: 'piezas', stock: 6, minStock: 8, esBafar: false, esCarneMart: true },
+    { id: 12, nombre: 'Jitomate bola', marca: 'Mercado', categoria: 'Verduras', unidad: 'kilos', stock: 14, minStock: 10, esBafar: false, esCarneMart: true },
     { id: 13, nombre: 'Cebolla blanca', marca: 'Mercado', categoria: 'Verduras', unidad: 'kilos', stock: 18, minStock: 10, esBafar: false },
     // Salsas
-    { id: 14, nombre: 'Catsup 1 L', marca: 'McCormick', categoria: 'Salsas', unidad: 'botes', stock: 7, minStock: 4, esBafar: false },
+    { id: 14, nombre: 'Catsup 1 L', marca: 'McCormick', categoria: 'Salsas', unidad: 'botes', stock: 7, minStock: 4, esBafar: false, esCarneMart: true },
     { id: 15, nombre: 'Salsa BBQ 500 ml', marca: 'McCormick', categoria: 'Salsas', unidad: 'botes', stock: 3, minStock: 4, esBafar: false },
     // Refrescos
-    { id: 16, nombre: 'Coca-Cola 600 ml', marca: 'Coca-Cola', categoria: 'Refrescos', unidad: 'piezas', stock: 48, minStock: 24, esBafar: false },
+    { id: 16, nombre: 'Coca-Cola 600 ml', marca: 'Coca-Cola', categoria: 'Refrescos', unidad: 'piezas', stock: 48, minStock: 24, esBafar: false, esCarneMart: true },
     { id: 17, nombre: 'Sidral Mundet 600 ml', marca: 'Mundet', categoria: 'Refrescos', unidad: 'piezas', stock: 14, minStock: 12, esBafar: false },
     { id: 18, nombre: 'Jarritos tamarindo 500 ml', marca: 'Jarritos', categoria: 'Refrescos', unidad: 'piezas', stock: 28, minStock: 18, esBafar: false },
     { id: 19, nombre: 'Sangría Señorial 355 ml', marca: 'Señorial', categoria: 'Refrescos', unidad: 'piezas', stock: 9, minStock: 12, esBafar: false },
@@ -232,7 +251,6 @@ export default function BafarAliadosDashboard() {
           { id: 'inventario', label: 'Mis Inventarios', icon: Boxes },
           { id: 'pedidos', label: 'Bienvenido a BAFAR', icon: ShoppingCart },
           { id: 'academy', label: 'BAFAR Academy', icon: GraduationCap },
-          { id: 'alertas', label: 'Alertas inteligentes', icon: Bell },
         ].map(t => {
           const Icon = t.icon;
           const active = tab === t.id;
@@ -250,9 +268,6 @@ export default function BafarAliadosDashboard() {
             >
               <Icon size={15} />
               {t.label}
-              {t.id === 'alertas' && (
-                <span style={{ background: BRAND.red, color: 'white', fontSize: 10, padding: '2px 6px', borderRadius: 8, fontWeight: 700 }}>{invRojo.length + 3}</span>
-              )}
             </button>
           );
         })}
@@ -680,7 +695,7 @@ export default function BafarAliadosDashboard() {
               <div>
                 <div style={{ fontSize: 12, color: BRAND.muted, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>Tu almacén en tiempo real</div>
                 <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Mis Inventarios</h1>
-                <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>Lo que tienes hoy en piezas. Cuando algo se ponga en rojo, te avisamos en Alertas inteligentes.</p>
+                <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>Lo que tienes hoy en piezas. Cuando algo baje del mínimo, lo marcamos en rojo.</p>
               </div>
               <button
                 className="bf-btn-primary"
@@ -759,7 +774,12 @@ export default function BafarAliadosDashboard() {
                         <Flame size={10} /> BAFAR
                       </div>
                     )}
-                    <div style={{ paddingRight: item.esBafar ? 70 : 0 }}>
+                    {item.esCarneMart && !item.esBafar && (
+                      <div style={{ position: 'absolute', top: 0, right: 0, background: BRAND.green, color: 'white', fontSize: 10, fontWeight: 800, letterSpacing: 0.6, padding: '4px 12px', borderRadius: '0 14px 0 12px', display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Flame size={10} /> CarneMart
+                      </div>
+                    )}
+                    <div style={{ paddingRight: (item.esBafar || item.esCarneMart) ? 90 : 0 }}>
                       <div style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.3 }}>{item.nombre}</div>
                       <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>{item.marca} · {item.categoria}</div>
                     </div>
@@ -968,141 +988,125 @@ export default function BafarAliadosDashboard() {
               </div>
             </div>
 
-            {/* DESTACADO */}
-            <div style={{ background: `linear-gradient(135deg, ${BRAND.red} 0%, ${BRAND.redDark} 100%)`, borderRadius: 14, padding: 28, marginBottom: 24, color: 'white', display: 'grid', gridTemplateColumns: '1fr auto', gap: 24, alignItems: 'center' }}>
-                <div>
-                  <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', marginBottom: 12 }}>DESTACADO ESTA SEMANA</span>
-                  <div style={{ fontSize: 24, fontWeight: 700, margin: '8px 0', letterSpacing: '-0.5px' }}>Cómo hacer la hamburguesa perfecta</div>
-                  <div style={{ fontSize: 13, opacity: 0.9, marginBottom: 16, maxWidth: 480 }}>
-                    Aprende la técnica del Chef Roberto Méndez para lograr el sello Maillard ideal, el punto exacto de cocción y el balance perfecto entre carne, queso y aderezos.
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 12, opacity: 0.85 }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Clock size={12} /> 12:40</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Users size={12} /> 1,840 vistas</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Zap size={12} /> Nivel básico</span>
-                  </div>
+            {/* SERIE EXCLUSIVA: ARQUITECTO DE TU PROPIO DESTINO */}
+            <button
+              onClick={() => setShowSerieModal(true)}
+              style={{
+                width: '100%',
+                background: `linear-gradient(135deg, ${BRAND.ink} 0%, #2d2d2d 60%, ${BRAND.amber} 100%)`,
+                border: 'none',
+                borderRadius: 14,
+                padding: '32px 32px',
+                marginBottom: 24,
+                cursor: 'pointer',
+                color: 'white',
+                display: 'grid',
+                gridTemplateColumns: 'auto 1fr auto',
+                gap: 24,
+                alignItems: 'center',
+                textAlign: 'left',
+                fontFamily: 'inherit',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.18)',
+                transition: 'transform 0.2s, box-shadow 0.2s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 36px rgba(0,0,0,0.25)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.18)'; }}
+            >
+              <div style={{ width: 72, height: 72, background: 'rgba(255,255,255,0.15)', borderRadius: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(6px)' }}>
+                <Play size={32} fill="white" color="white" />
+              </div>
+              <div>
+                <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.22)', color: 'white', marginBottom: 10 }}>SERIE EXCLUSIVA · INTRODUCCIÓN</span>
+                <div style={{ fontSize: 28, fontWeight: 800, margin: '10px 0 6px', letterSpacing: '-0.5px', lineHeight: 1.1 }}>ARQUITECTO DE TU PROPIO DESTINO</div>
+                <div style={{ fontSize: 13, opacity: 0.9, maxWidth: 620 }}>
+                  Una serie inédita con los aprendizajes de Grupo BAFAR para que tomes el control de tu negocio y construyas tu propio futuro. Toca para abrir la serie.
                 </div>
-                <button style={{ background: 'white', color: BRAND.red, border: 'none', width: 64, height: 64, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.2)' }}>
-                  <Play size={24} fill={BRAND.red} />
-                </button>
-            </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'white', color: BRAND.ink, padding: '12px 20px', borderRadius: 999, fontWeight: 700, fontSize: 14 }}>
+                ENTRAR A LA APP <ChevronRight size={16} />
+              </div>
+            </button>
 
-            {/* FILTROS */}
-            <div style={{ display: 'flex', gap: 8, marginBottom: 18, flexWrap: 'wrap' }}>
-              {['TODOS', 'COCINA', 'RENTABILIDAD', 'MARKETING', 'OPERACIÓN'].map(cat => (
-                <button key={cat} onClick={() => setFiltroVideo(cat)} className="bf-pill" style={{
-                  background: filtroVideo === cat ? BRAND.ink : 'white',
-                  color: filtroVideo === cat ? 'white' : BRAND.muted,
-                  border: filtroVideo === cat ? 'none' : `1px solid ${BRAND.border}`,
-                  cursor: 'pointer', padding: '8px 14px', fontFamily: 'inherit'
-                }}>{cat}</button>
-              ))}
-            </div>
-
-            {/* GRID DE VIDEOS */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-              {videosFiltrados.map(v => (
-                <div key={v.id} className="bf-card" style={{ padding: 0, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s' }}
-                     onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-                     onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-                  <div style={{ background: v.color, height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                    <div style={{ width: 48, height: 48, background: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
-                      <Play size={18} fill={v.textColor} color={v.textColor} />
-                    </div>
-                    <span style={{ position: 'absolute', bottom: 10, right: 10, background: 'rgba(0,0,0,0.75)', color: 'white', fontSize: 11, padding: '3px 8px', borderRadius: 4, fontWeight: 600 }}>{v.duracion}</span>
-                    <span className="bf-pill" style={{ position: 'absolute', top: 10, left: 10, background: 'white', color: v.textColor }}>{v.categoria}</span>
-                  </div>
-                  <div style={{ padding: 16 }}>
-                    <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.35, marginBottom: 8 }}>{v.titulo}</div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: BRAND.muted }}>
-                      <span>{v.autor}</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Users size={11} /> {v.vistas.toLocaleString('es-MX')}</span>
-                    </div>
-                  </div>
+            {/* SERIE EXCLUSIVA: MODELO DE GESTIÓN BAFAR */}
+            <button
+              onClick={() => setShowModeloModal(true)}
+              style={{
+                width: '100%',
+                background: `linear-gradient(135deg, ${BRAND.ink} 0%, #1a3d2e 60%, ${BRAND.green} 100%)`,
+                border: 'none',
+                borderRadius: 14,
+                padding: '32px 32px',
+                marginBottom: 24,
+                cursor: 'pointer',
+                color: 'white',
+                display: 'grid',
+                gridTemplateColumns: 'auto 1fr auto',
+                gap: 24,
+                alignItems: 'center',
+                textAlign: 'left',
+                fontFamily: 'inherit',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.18)',
+                transition: 'transform 0.2s, box-shadow 0.2s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 36px rgba(0,0,0,0.25)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.18)'; }}
+            >
+              <div style={{ width: 72, height: 72, background: 'rgba(255,255,255,0.15)', borderRadius: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(6px)' }}>
+                <Play size={32} fill="white" color="white" />
+              </div>
+              <div>
+                <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.22)', color: 'white', marginBottom: 10 }}>SERIE EXCLUSIVA · 9 EPISODIOS</span>
+                <div style={{ fontSize: 28, fontWeight: 800, margin: '10px 0 6px', letterSpacing: '-0.5px', lineHeight: 1.1 }}>MODELO DE GESTIÓN BAFAR</div>
+                <div style={{ fontSize: 13, opacity: 0.9, maxWidth: 620 }}>
+                  Una serie completa con la metodología que usamos para profesionalizar tu negocio: procesos, indicadores, finanzas y liderazgo. Toca para abrir la serie.
                 </div>
-              ))}
-            </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'white', color: BRAND.ink, padding: '12px 20px', borderRadius: 999, fontWeight: 700, fontSize: 14 }}>
+                VER SERIE <ChevronRight size={16} />
+              </div>
+            </button>
+
+            {/* SERIE: BAFAR ACADEMY (biblioteca completa) */}
+            <button
+              onClick={() => setShowAcademyModal(true)}
+              style={{
+                width: '100%',
+                background: `linear-gradient(135deg, ${BRAND.ink} 0%, #5a0a17 60%, ${BRAND.red} 100%)`,
+                border: 'none',
+                borderRadius: 14,
+                padding: '32px 32px',
+                marginBottom: 24,
+                cursor: 'pointer',
+                color: 'white',
+                display: 'grid',
+                gridTemplateColumns: 'auto 1fr auto',
+                gap: 24,
+                alignItems: 'center',
+                textAlign: 'left',
+                fontFamily: 'inherit',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.18)',
+                transition: 'transform 0.2s, box-shadow 0.2s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 36px rgba(0,0,0,0.25)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.18)'; }}
+            >
+              <div style={{ width: 72, height: 72, background: 'rgba(255,255,255,0.15)', borderRadius: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(6px)' }}>
+                <BookOpen size={32} color="white" />
+              </div>
+              <div>
+                <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.22)', color: 'white', marginBottom: 10 }}>BIBLIOTECA · {VIDEOS.length} VIDEOS</span>
+                <div style={{ fontSize: 28, fontWeight: 800, margin: '10px 0 6px', letterSpacing: '-0.5px', lineHeight: 1.1 }}>BAFAR Academy</div>
+                <div style={{ fontSize: 13, opacity: 0.9, maxWidth: 620 }}>
+                  Cocina, rentabilidad, marketing y operación. Todos los videos de la academia en un solo lugar, filtrables por categoría.
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'white', color: BRAND.ink, padding: '12px 20px', borderRadius: 999, fontWeight: 700, fontSize: 14 }}>
+                VER VIDEOS <ChevronRight size={16} />
+              </div>
+            </button>
           </div>
         )}
 
-        {/* ============================================ */}
-        {/* TAB 4: ALERTAS INTELIGENTES                    */}
-        {/* ============================================ */}
-        {tab === 'alertas' && (
-          <div className="bf-anim-fade">
-            <div style={{ marginBottom: 24 }}>
-              <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Alertas inteligentes</h1>
-              <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>BAFAR observa tus números y te avisa antes de que los problemas cuesten dinero.</p>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-
-              {invRojo.length === 0 ? (
-                <div style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                    <Check size={14} color={BRAND.green} />
-                    <span className="bf-pill" style={{ background: BRAND.green, color: 'white' }}>INVENTARIO OK</span>
-                  </div>
-                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Todo tu inventario está en niveles sanos</div>
-                  <div style={{ fontSize: 13, color: '#0a4a36' }}>Ningún producto está por debajo del mínimo. Revisa Mis Inventarios para mantenerlo así.</div>
-                </div>
-              ) : invRojo.map(item => (
-                <div key={`alert-${item.id}`} style={{ background: '#fff5f5', borderLeft: `4px solid ${BRAND.red}`, borderRadius: '0 12px 12px 0', padding: '18px 22px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 16, alignItems: 'center' }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                      <AlertCircle size={14} color={BRAND.red} />
-                      <span className="bf-pill" style={{ background: BRAND.red, color: 'white' }}>URGENTE · INVENTARIO{item.esBafar ? ' · BAFAR' : ''}</span>
-                    </div>
-                    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Te quedan {item.stock} {item.unidad} de {item.nombre}</div>
-                    <div style={{ fontSize: 13, color: '#5a1212' }}>Estás por debajo de tu mínimo ({item.minStock} {item.unidad}). {item.esBafar ? 'Pídelo directo a BAFAR antes de quedarte sin él.' : 'Reordena con tu proveedor para evitar perder ventas.'}</div>
-                  </div>
-                  <button className="bf-btn-primary" onClick={() => setTab(item.esBafar ? 'pedidos' : 'inventario')}>{item.esBafar ? 'Pedir a BAFAR →' : 'Ver inventario →'}</button>
-                </div>
-              ))}
-
-              <div style={{ background: '#fff9eb', borderLeft: `4px solid ${BRAND.amber}`, borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                  <TrendingDown size={14} color={BRAND.amber} />
-                  <span className="bf-pill" style={{ background: BRAND.amber, color: 'white' }}>RENTABILIDAD</span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Tu margen bajó 8% esta semana</div>
-                <div style={{ fontSize: 13, color: '#6b4f05', marginBottom: 12 }}>Tus costos subieron pero no actualizaste precios. Mira el video "Cómo fijar tus precios de menú" para corregir esto en 22 minutos.</div>
-                <button onClick={() => setTab('academy')} style={{ background: 'white', color: BRAND.amber, border: `1px solid ${BRAND.amber}`, padding: '8px 14px', borderRadius: 8, fontWeight: 600, cursor: 'pointer', fontSize: 12 }}>Ver video →</button>
-              </div>
-
-              <div style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: '18px 22px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 16, alignItems: 'center' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                    <Award size={14} color={BRAND.green} />
-                    <span className="bf-pill" style={{ background: BRAND.green, color: 'white' }}>OPORTUNIDAD</span>
-                  </div>
-                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Tienes {puntos.toLocaleString('es-MX')} puntos sin usar</div>
-                  <div style={{ fontSize: 13, color: '#0a4a36' }}>Equivalen a una caja de queso Sabori manchego gratis en tu próximo pedido. No los dejes ir.</div>
-                </div>
-                <button onClick={() => setTab('pedidos')} style={{ background: BRAND.green, color: 'white', border: 'none', padding: '10px 18px', borderRadius: 10, fontWeight: 600, cursor: 'pointer', fontSize: 13 }}>Canjear →</button>
-              </div>
-
-              <div style={{ background: '#eef3fb', borderLeft: '4px solid #1e5fa8', borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                  <TrendingUp size={14} color="#1e5fa8" />
-                  <span className="bf-pill" style={{ background: '#1e5fa8', color: 'white' }}>TENDENCIA DETECTADA</span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Los lunes vendes 30% menos que el promedio</div>
-                <div style={{ fontSize: 13, color: '#0a3470' }}>Promedio de los últimos 8 lunes vs resto de la semana. Considera lanzar una promoción 2x1 los lunes para activar el día más débil de tu semana.</div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: 28, padding: 20, background: BRAND.cream, borderRadius: 14, display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div style={{ width: 44, height: 44, background: BRAND.red, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Zap size={20} color="white" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 700 }}>BAFAR convierte tus datos en decisiones</div>
-                <div style={{ fontSize: 12, color: BRAND.muted, marginTop: 2 }}>Cada minuto que un problema no se resuelve en tu negocio, te está costando dinero. Por eso te avisamos antes.</div>
-              </div>
-            </div>
-          </div>
-        )}
       </main>
 
       {/* FOOTER */}
@@ -1110,6 +1114,137 @@ export default function BafarAliadosDashboard() {
         BAFAR Aliados · Tu socio estratégico de cocina · v1.0 · www.bafar.com.mx
         <div style={{ marginTop: 6, fontSize: 11, fontWeight: 600, color: BRAND.ink }}>Powered by AXON B2B</div>
       </footer>
+
+      {/* MODAL: SERIE ARQUITECTO DE TU PROPIO DESTINO */}
+      {showSerieModal && createPortal(
+        <div onClick={() => setShowSerieModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
+          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 0, width: 720, maxWidth: '100%', maxHeight: 'calc(100vh - 32px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ background: `linear-gradient(135deg, ${BRAND.ink} 0%, #2d2d2d 60%, ${BRAND.amber} 100%)`, color: 'white', padding: '24px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
+              <div>
+                <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.22)', color: 'white' }}>SERIE EXCLUSIVA · INTRODUCCIÓN</span>
+                <div style={{ fontSize: 22, fontWeight: 800, margin: '10px 0 4px', letterSpacing: '-0.5px' }}>ARQUITECTO DE TU PROPIO DESTINO</div>
+                <div style={{ fontSize: 12, opacity: 0.9 }}>Aprendizajes del Grupo BAFAR para construir tu propio futuro como empresario.</div>
+              </div>
+              <button onClick={() => setShowSerieModal(false)} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', color: 'white', display: 'flex', padding: 8, borderRadius: 8 }}><X size={18} /></button>
+            </div>
+            <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 10, overflowY: 'auto', background: BRAND.paper }}>
+              {SERIE_ARQUITECTO.map((v, i) => (
+                <div key={v.id} className="bf-card" style={{ padding: 14, display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 14, alignItems: 'center', cursor: 'pointer', transition: 'transform 0.15s' }}
+                     onMouseEnter={e => e.currentTarget.style.transform = 'translateX(2px)'}
+                     onMouseLeave={e => e.currentTarget.style.transform = 'translateX(0)'}>
+                  <div style={{ width: 56, height: 56, background: `linear-gradient(135deg, ${BRAND.ink} 0%, ${BRAND.amber} 100%)`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                    <Play size={20} fill="white" color="white" />
+                    <span style={{ position: 'absolute', top: -6, left: -6, background: 'white', color: BRAND.ink, fontSize: 10, fontWeight: 800, width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${BRAND.border}` }}>{i + 1}</span>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 11, color: BRAND.muted, fontWeight: 600, letterSpacing: 0.3 }}>{v.nivel.toUpperCase()}</div>
+                    <div style={{ fontSize: 15, fontWeight: 700, margin: '2px 0 4px', lineHeight: 1.3 }}>{v.titulo}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 11, color: BRAND.muted }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Clock size={11} /> {v.duracion}</span>
+                      <span>{v.autor}</span>
+                    </div>
+                  </div>
+                  <button style={{ background: BRAND.ink, color: 'white', border: 'none', padding: '8px 14px', borderRadius: 8, fontWeight: 600, cursor: 'pointer', fontSize: 12, fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Play size={12} fill="white" /> Ver
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* MODAL: BAFAR ACADEMY (biblioteca completa) */}
+      {showAcademyModal && createPortal(
+        <div onClick={() => setShowAcademyModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
+          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 0, width: 960, maxWidth: '100%', maxHeight: 'calc(100vh - 32px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ background: `linear-gradient(135deg, ${BRAND.ink} 0%, #5a0a17 60%, ${BRAND.red} 100%)`, color: 'white', padding: '24px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
+              <div>
+                <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.22)', color: 'white' }}>BIBLIOTECA · {VIDEOS.length} VIDEOS</span>
+                <div style={{ fontSize: 22, fontWeight: 800, margin: '10px 0 4px', letterSpacing: '-0.5px' }}>BAFAR Academy</div>
+                <div style={{ fontSize: 12, opacity: 0.9 }}>Contenido gratuito para aliados: cocina, rentabilidad, marketing y operación.</div>
+              </div>
+              <button onClick={() => setShowAcademyModal(false)} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', color: 'white', display: 'flex', padding: 8, borderRadius: 8 }}><X size={18} /></button>
+            </div>
+            <div style={{ padding: 20, overflowY: 'auto', background: BRAND.paper }}>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 18, flexWrap: 'wrap' }}>
+                {['TODOS', 'COCINA', 'RENTABILIDAD', 'MARKETING', 'OPERACIÓN'].map(cat => (
+                  <button key={cat} onClick={() => setFiltroVideo(cat)} className="bf-pill" style={{
+                    background: filtroVideo === cat ? BRAND.ink : 'white',
+                    color: filtroVideo === cat ? 'white' : BRAND.muted,
+                    border: filtroVideo === cat ? 'none' : `1px solid ${BRAND.border}`,
+                    cursor: 'pointer', padding: '8px 14px', fontFamily: 'inherit'
+                  }}>{cat}</button>
+                ))}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+                {videosFiltrados.map(v => (
+                  <div key={v.id} className="bf-card" style={{ padding: 0, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s' }}
+                       onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                       onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                    <div style={{ background: v.color, height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                      <div style={{ width: 48, height: 48, background: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+                        <Play size={18} fill={v.textColor} color={v.textColor} />
+                      </div>
+                      <span style={{ position: 'absolute', bottom: 10, right: 10, background: 'rgba(0,0,0,0.75)', color: 'white', fontSize: 11, padding: '3px 8px', borderRadius: 4, fontWeight: 600 }}>{v.duracion}</span>
+                      <span className="bf-pill" style={{ position: 'absolute', top: 10, left: 10, background: 'white', color: v.textColor }}>{v.categoria}</span>
+                    </div>
+                    <div style={{ padding: 16 }}>
+                      <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.35, marginBottom: 8 }}>{v.titulo}</div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: BRAND.muted }}>
+                        <span>{v.autor}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Users size={11} /> {v.vistas.toLocaleString('es-MX')}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* MODAL: SERIE MODELO DE GESTIÓN BAFAR */}
+      {showModeloModal && createPortal(
+        <div onClick={() => setShowModeloModal(false)} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
+          <div onClick={e => e.stopPropagation()} className="bf-card" style={{ padding: 0, width: 720, maxWidth: '100%', maxHeight: 'calc(100vh - 32px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ background: `linear-gradient(135deg, ${BRAND.ink} 0%, #1a3d2e 60%, ${BRAND.green} 100%)`, color: 'white', padding: '24px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
+              <div>
+                <span className="bf-pill" style={{ background: 'rgba(255,255,255,0.22)', color: 'white' }}>SERIE EXCLUSIVA · 9 EPISODIOS</span>
+                <div style={{ fontSize: 22, fontWeight: 800, margin: '10px 0 4px', letterSpacing: '-0.5px' }}>MODELO DE GESTIÓN BAFAR</div>
+                <div style={{ fontSize: 12, opacity: 0.9 }}>La metodología BAFAR para profesionalizar tu negocio paso a paso.</div>
+              </div>
+              <button onClick={() => setShowModeloModal(false)} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', color: 'white', display: 'flex', padding: 8, borderRadius: 8 }}><X size={18} /></button>
+            </div>
+            <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 10, overflowY: 'auto', background: BRAND.paper }}>
+              {SERIE_MODELO.map((v, i) => (
+                <div key={v.id} className="bf-card" style={{ padding: 14, display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 14, alignItems: 'center', cursor: 'pointer', transition: 'transform 0.15s' }}
+                     onMouseEnter={e => e.currentTarget.style.transform = 'translateX(2px)'}
+                     onMouseLeave={e => e.currentTarget.style.transform = 'translateX(0)'}>
+                  <div style={{ width: 56, height: 56, background: `linear-gradient(135deg, ${BRAND.ink} 0%, ${BRAND.green} 100%)`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                    <Play size={20} fill="white" color="white" />
+                    <span style={{ position: 'absolute', top: -6, left: -6, background: 'white', color: BRAND.ink, fontSize: 10, fontWeight: 800, width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${BRAND.border}` }}>{i + 1}</span>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 11, color: BRAND.muted, fontWeight: 600, letterSpacing: 0.3 }}>{v.nivel.toUpperCase()}</div>
+                    <div style={{ fontSize: 15, fontWeight: 700, margin: '2px 0 4px', lineHeight: 1.3 }}>{v.titulo}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 11, color: BRAND.muted }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Clock size={11} /> {v.duracion}</span>
+                      <span>{v.autor}</span>
+                    </div>
+                  </div>
+                  <button style={{ background: BRAND.ink, color: 'white', border: 'none', padding: '8px 14px', borderRadius: 8, fontWeight: 600, cursor: 'pointer', fontSize: 12, fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Play size={12} fill="white" /> Ver
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
 
       {/* MODAL: NUEVO PRODUCTO */}
       {showProdModal && createPortal(
