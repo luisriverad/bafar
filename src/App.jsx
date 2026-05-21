@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  TrendingUp, TrendingDown, ShoppingCart, Play, Bell, Home,
-  Package, GraduationCap, AlertCircle, Plus, Minus, Check, X,
+  TrendingUp, ShoppingCart, Play, Home,
+  Package, GraduationCap, Plus, Minus, Check, X,
   DollarSign, Wallet, Boxes, Award, Clock, Users, Search,
   Filter, ChevronRight, Flame, Target, BookOpen, Zap,
   ClipboardList, Receipt, ArrowDownCircle, ArrowUpCircle, Save
@@ -26,20 +26,222 @@ const BRAND = {
   amber: '#b8860b',
 };
 
-const PRODUCTOS = [
-  { id: 1, marca: 'BAFAR Carnes', nombre: 'Carne molida de res', presentacion: 'Caja 10 kg', precio: 1580, color: '#fce8ec', textColor: '#8b0a1f' },
-  { id: 2, marca: 'BAFAR Carnes', nombre: 'Arrachera marinada', presentacion: 'Pieza 5 kg', precio: 1890, color: '#fce8ec', textColor: '#8b0a1f' },
-  { id: 3, marca: 'BURR', nombre: 'Jamón de pavo', presentacion: 'Pieza 4 kg', precio: 680, color: '#fef3d4', textColor: '#7a5a05' },
-  { id: 4, marca: 'BURR', nombre: 'Salchicha coctel', presentacion: 'Caja 3 kg', precio: 420, color: '#fef3d4', textColor: '#7a5a05' },
-  { id: 5, marca: 'SABORI', nombre: 'Queso manchego', presentacion: 'Bloque 3 kg', precio: 890, color: '#fff4e6', textColor: '#8b4513' },
-  { id: 6, marca: 'SABORI', nombre: 'Queso mozzarella rallado', presentacion: 'Bolsa 2.5 kg', precio: 740, color: '#fff4e6', textColor: '#8b4513' },
-  { id: 7, marca: 'LA CHONA', nombre: 'Salchicha tipo viena', presentacion: 'Caja 5 kg', precio: 520, color: '#e8f5e0', textColor: '#2d5a0e' },
-  { id: 8, marca: 'CAPERUCITA', nombre: 'Tocino ahumado', presentacion: 'Paquete 2.5 kg', precio: 740, color: '#fce8ec', textColor: '#8b0a1f' },
-  { id: 9, marca: 'MONTECILLO', nombre: 'Pechuga de pollo', presentacion: 'Caja 8 kg', precio: 1120, color: '#e0f2ec', textColor: '#0a4a36' },
-  { id: 10, marca: 'MONTECILLO', nombre: 'Alitas de pollo', presentacion: 'Caja 6 kg', precio: 980, color: '#e0f2ec', textColor: '#0a4a36' },
-  { id: 11, marca: 'BAFAR Carnes', nombre: 'Hamburguesa de res 150g', presentacion: 'Caja 30 pzs', precio: 1340, color: '#fce8ec', textColor: '#8b0a1f' },
-  { id: 12, marca: 'BURR', nombre: 'Pepperoni rebanado', presentacion: 'Bolsa 1 kg', precio: 380, color: '#fef3d4', textColor: '#7a5a05' },
+const BAFAR_PRODUCTOS = [
+  { id: 1, marca: 'BAFAR Carnes', categoria: 'Res', nombre: 'Carne molida de res', presentacion: 'Caja 10 kg', precio: 1580, color: '#fce8ec', textColor: '#8b0a1f' },
+  { id: 2, marca: 'BAFAR Carnes', categoria: 'Res', nombre: 'Arrachera marinada', presentacion: 'Pieza 5 kg', precio: 1890, color: '#fce8ec', textColor: '#8b0a1f' },
+  { id: 3, marca: 'BURR', categoria: 'Embutidos', nombre: 'Jamón de pavo', presentacion: 'Pieza 4 kg', precio: 680, color: '#fef3d4', textColor: '#7a5a05' },
+  { id: 4, marca: 'BURR', categoria: 'Embutidos', nombre: 'Salchicha coctel', presentacion: 'Caja 3 kg', precio: 420, color: '#fef3d4', textColor: '#7a5a05' },
+  { id: 5, marca: 'SABORI', categoria: 'Quesos', nombre: 'Queso manchego', presentacion: 'Bloque 3 kg', precio: 890, color: '#fff4e6', textColor: '#8b4513' },
+  { id: 6, marca: 'SABORI', categoria: 'Quesos', nombre: 'Queso mozzarella rallado', presentacion: 'Bolsa 2.5 kg', precio: 740, color: '#fff4e6', textColor: '#8b4513' },
+  { id: 7, marca: 'LA CHONA', categoria: 'Embutidos', nombre: 'Salchicha tipo viena', presentacion: 'Caja 5 kg', precio: 520, color: '#e8f5e0', textColor: '#2d5a0e' },
+  { id: 8, marca: 'CAPERUCITA', categoria: 'Cerdo', nombre: 'Tocino ahumado', presentacion: 'Paquete 2.5 kg', precio: 740, color: '#fce8ec', textColor: '#8b0a1f' },
+  { id: 9, marca: 'MONTECILLO', categoria: 'Pollo', nombre: 'Pechuga de pollo', presentacion: 'Caja 8 kg', precio: 1120, color: '#e0f2ec', textColor: '#0a4a36' },
+  { id: 10, marca: 'MONTECILLO', categoria: 'Pollo', nombre: 'Alitas de pollo', presentacion: 'Caja 6 kg', precio: 980, color: '#e0f2ec', textColor: '#0a4a36' },
+  { id: 11, marca: 'BAFAR Carnes', categoria: 'Res', nombre: 'Hamburguesa de res 150g', presentacion: 'Caja 30 pzs', precio: 1340, color: '#fce8ec', textColor: '#8b0a1f' },
+  { id: 12, marca: 'BURR', categoria: 'Embutidos', nombre: 'Pepperoni rebanado', presentacion: 'Bolsa 1 kg', precio: 380, color: '#fef3d4', textColor: '#7a5a05' },
+].map(p => ({ ...p, tienda: 'BAFAR' }));
+
+// Paletas reutilizables para colorear marcas de CARNEMART
+const _CM_PAL = {
+  red:    ['#fde2e2', '#a40012'],
+  blue:   ['#dceeff', '#0a3470'],
+  yellow: ['#fff4d4', '#7a5a05'],
+  orange: ['#fde2cc', '#9c3a05'],
+  green:  ['#e0f2ec', '#0a4a36'],
+  pink:   ['#fce4f0', '#8a1850'],
+  brown:  ['#efe3d5', '#4a2c0a'],
+  cream:  ['#fef3d4', '#7a5a05'],
+};
+
+const _CM_BRAND_CATEGORIA = {
+  'Coca-Cola': 'Refrescos y aguas', 'Pepsi': 'Refrescos y aguas', 'Boing': 'Refrescos y aguas',
+  'Jarritos': 'Refrescos y aguas', 'Bonafont': 'Refrescos y aguas', 'Ciel': 'Refrescos y aguas',
+  'Red Bull': 'Refrescos y aguas',
+  'Sabritas': 'Snacks', 'Doritos': 'Snacks', 'Ruffles': 'Snacks',
+  'Cheetos': 'Snacks', 'Takis': 'Snacks', 'Barcel': 'Snacks',
+  'Bimbo': 'Pan y galletas', 'Tía Rosa': 'Pan y galletas',
+  'Marinela': 'Dulces y chocolates', 'Carlos V': 'Dulces y chocolates', 'M&Ms': 'Dulces y chocolates',
+  'Snickers': 'Dulces y chocolates', 'Vero': 'Dulces y chocolates',
+  'Lala': 'Lácteos', 'Yoplait': 'Lácteos', 'Alpura': 'Lácteos',
+  'Maruchan': 'Sopas y caldos', 'Knorr': 'Sopas y caldos',
+  'McCormick': 'Salsas y enlatados', 'Herdez': 'Salsas y enlatados', 'Valentina': 'Salsas y enlatados',
+  'Tajín': 'Salsas y enlatados', 'La Costeña': 'Salsas y enlatados',
+  'Nescafé': 'Café y cereales', 'Punta del Cielo': 'Café y cereales',
+  'Zucaritas': 'Café y cereales', 'Choco Krispis': 'Café y cereales',
+  'Corn Flakes': 'Café y cereales', "Kellogg's": 'Café y cereales',
+  'Modelo': 'Cervezas', 'Corona': 'Cervezas', 'Tecate': 'Cervezas',
+  'Victoria': 'Cervezas', 'Indio': 'Cervezas', 'Heineken': 'Cervezas',
+  'Tang': 'Despensa', 'Suavitel': 'Despensa',
+};
+
+const _CM_BRAND_STYLE = {
+  'Coca-Cola': _CM_PAL.red, 'Pepsi': _CM_PAL.blue, 'Boing': _CM_PAL.yellow, 'Jarritos': _CM_PAL.orange,
+  'Bonafont': _CM_PAL.blue, 'Ciel': _CM_PAL.blue, 'Red Bull': _CM_PAL.blue,
+  'Sabritas': _CM_PAL.yellow, 'Doritos': _CM_PAL.orange, 'Ruffles': _CM_PAL.orange,
+  'Cheetos': _CM_PAL.orange, 'Takis': _CM_PAL.red, 'Barcel': _CM_PAL.orange,
+  'Bimbo': _CM_PAL.red, 'Tía Rosa': _CM_PAL.red, 'Marinela': _CM_PAL.pink,
+  'Lala': _CM_PAL.yellow, 'Yoplait': _CM_PAL.pink, 'Alpura': _CM_PAL.blue,
+  'Maruchan': _CM_PAL.orange, 'Knorr': _CM_PAL.green, 'McCormick': _CM_PAL.red,
+  'Herdez': _CM_PAL.green, 'Valentina': _CM_PAL.red, 'Tajín': _CM_PAL.orange,
+  'La Costeña': _CM_PAL.green, 'Nescafé': _CM_PAL.brown, 'Punta del Cielo': _CM_PAL.brown,
+  'Zucaritas': _CM_PAL.orange, 'Choco Krispis': _CM_PAL.brown, 'Corn Flakes': _CM_PAL.cream,
+  "Kellogg's": _CM_PAL.cream, 'Modelo': _CM_PAL.cream, 'Corona': _CM_PAL.cream,
+  'Tecate': _CM_PAL.red, 'Victoria': _CM_PAL.cream, 'Indio': _CM_PAL.cream,
+  'Heineken': _CM_PAL.green, 'Carlos V': _CM_PAL.brown, 'M&Ms': _CM_PAL.orange,
+  'Snickers': _CM_PAL.brown, 'Vero': _CM_PAL.orange, 'Tang': _CM_PAL.orange,
+  'Suavitel': _CM_PAL.blue,
+};
+
+// 120 SKUs estilo OXXO/abarrotes
+const _CM_RAW = [
+  // Refrescos y bebidas (27)
+  ['Coca-Cola', 'Original 600 ml', 'Caja 24 pzs', 380],
+  ['Coca-Cola', 'Sin azúcar 600 ml', 'Caja 24 pzs', 380],
+  ['Coca-Cola', 'Light 600 ml', 'Caja 24 pzs', 380],
+  ['Coca-Cola', 'Original 2 L', 'Pieza', 38],
+  ['Coca-Cola', 'Lata 355 ml', 'Caja 12 pzs', 198],
+  ['Coca-Cola', 'Sabor cereza 600 ml', 'Caja 24 pzs', 410],
+  ['Pepsi', 'Original 600 ml', 'Caja 24 pzs', 360],
+  ['Pepsi', 'Black 600 ml', 'Caja 24 pzs', 360],
+  ['Pepsi', 'Lata 355 ml', 'Caja 12 pzs', 180],
+  ['Pepsi', '2 L', 'Pieza', 36],
+  ['Boing', 'Mango 250 ml', 'Caja 18 pzs', 198],
+  ['Boing', 'Manzana 250 ml', 'Caja 18 pzs', 198],
+  ['Boing', 'Guayaba 250 ml', 'Caja 18 pzs', 198],
+  ['Boing', 'Uva 250 ml', 'Caja 18 pzs', 198],
+  ['Jarritos', 'Tamarindo 500 ml', 'Caja 24 pzs', 280],
+  ['Jarritos', 'Mandarina 500 ml', 'Caja 24 pzs', 280],
+  ['Jarritos', 'Limón 500 ml', 'Caja 24 pzs', 280],
+  ['Jarritos', 'Fresa 500 ml', 'Caja 24 pzs', 280],
+  ['Jarritos', 'Toronja 500 ml', 'Caja 24 pzs', 280],
+  ['Bonafont', 'Agua 1 L', 'Paquete 6 pzs', 78],
+  ['Bonafont', 'Agua 1.5 L', 'Paquete 6 pzs', 96],
+  ['Bonafont', 'Agua 600 ml', 'Caja 24 pzs', 168],
+  ['Bonafont', 'Garrafón 5 L', 'Pieza', 38],
+  ['Ciel', 'Agua 600 ml', 'Caja 24 pzs', 156],
+  ['Ciel', 'Mineral 600 ml', 'Caja 24 pzs', 180],
+  ['Red Bull', 'Original 250 ml', 'Caja 24 pzs', 720],
+  ['Red Bull', 'Sugarfree 250 ml', 'Caja 24 pzs', 720],
+
+  // Snacks salados (20)
+  ['Sabritas', 'Original 65 g', 'Caja 20 pzs', 320],
+  ['Sabritas', 'Adobadas 65 g', 'Caja 20 pzs', 320],
+  ['Sabritas', 'Crema y especias 65 g', 'Caja 20 pzs', 320],
+  ['Sabritas', 'Limón 65 g', 'Caja 20 pzs', 320],
+  ['Sabritas', 'Sal y vinagre 65 g', 'Caja 20 pzs', 320],
+  ['Doritos', 'Nacho 60 g', 'Caja 20 pzs', 320],
+  ['Doritos', 'Incógnita 60 g', 'Caja 20 pzs', 320],
+  ['Doritos', 'Diablo 60 g', 'Caja 20 pzs', 320],
+  ['Ruffles', 'Queso 65 g', 'Caja 20 pzs', 320],
+  ['Ruffles', 'Original 65 g', 'Caja 20 pzs', 320],
+  ['Cheetos', 'Torciditos 50 g', 'Caja 20 pzs', 280],
+  ['Cheetos', 'Flamin Hot 50 g', 'Caja 20 pzs', 280],
+  ['Cheetos', 'Crunchy 50 g', 'Caja 20 pzs', 280],
+  ['Takis', 'Fuego 60 g', 'Caja 20 pzs', 320],
+  ['Takis', 'Original 60 g', 'Caja 20 pzs', 320],
+  ['Takis', 'Volcano 60 g', 'Caja 20 pzs', 320],
+  ['Barcel', 'Chips Fuego 60 g', 'Caja 16 pzs', 240],
+  ['Barcel', 'Hot Nuts cacahuate 50 g', 'Caja 24 pzs', 280],
+  ['Barcel', 'Runners pizza 50 g', 'Caja 16 pzs', 240],
+  ['Barcel', 'Chamoy Locos 60 g', 'Caja 16 pzs', 240],
+
+  // Pan y galletas (9)
+  ['Bimbo', 'Pan blanco grande', 'Pieza 680 g', 65],
+  ['Bimbo', 'Pan integral', 'Pieza 620 g', 70],
+  ['Bimbo', 'Bimbollos hamburguesa', 'Paquete 8 pzs', 52],
+  ['Bimbo', 'Pan tostado', 'Pieza 380 g', 58],
+  ['Bimbo', 'Tortillinas blancas', 'Paquete 20 pzs', 38],
+  ['Bimbo', 'Donas azucaradas', 'Paquete 4 pzs', 36],
+  ['Tía Rosa', 'Polvorones', 'Paquete 6 pzs', 32],
+  ['Tía Rosa', 'Cuernitos', 'Paquete 4 pzs', 36],
+  ['Tía Rosa', 'Mantecadas', 'Paquete 6 pzs', 40],
+
+  // Dulces y chocolates (12)
+  ['Marinela', 'Gansito', 'Caja 8 pzs', 96],
+  ['Marinela', 'Pingüinos', 'Caja 8 pzs', 96],
+  ['Marinela', 'Sponch', 'Paquete 8 pzs', 78],
+  ['Marinela', 'Submarinos', 'Paquete 6 pzs', 66],
+  ['Marinela', 'Roles canela', 'Paquete 6 pzs', 60],
+  ['Carlos V', 'Tableta 80 g', 'Caja 20 pzs', 240],
+  ['Carlos V', 'Bolsa 12 pzs', 'Pieza', 48],
+  ['M&Ms', 'Original 49 g', 'Caja 24 pzs', 360],
+  ['M&Ms', 'Cacahuate 49 g', 'Caja 24 pzs', 360],
+  ['Snickers', 'Barra 50 g', 'Caja 24 pzs', 360],
+  ['Vero', 'Mango chamoy', 'Bolsa 24 pzs', 78],
+  ['Vero', 'Manzana picosita', 'Bolsa 24 pzs', 78],
+
+  // Lácteos (10)
+  ['Lala', 'Leche entera 1 L', 'Caja 12 pzs', 312],
+  ['Lala', 'Leche light 1 L', 'Caja 12 pzs', 312],
+  ['Lala', 'Crema ácida 200 g', 'Caja 12 pzs', 192],
+  ['Lala', 'Mantequilla con sal 90 g', 'Caja 24 pzs', 288],
+  ['Yoplait', 'Yogurt fresa 4 pzs', 'Paquete', 78],
+  ['Yoplait', 'Yogurt natural 1 L', 'Pieza', 48],
+  ['Yoplait', 'Yoghurt griego 150 g', 'Caja 12 pzs', 240],
+  ['Alpura', 'Leche entera 1 L', 'Caja 12 pzs', 300],
+  ['Alpura', 'Leche deslactosada 1 L', 'Caja 12 pzs', 312],
+  ['Alpura', 'Yogur bebible 1 L', 'Pieza', 48],
+
+  // Sopas y caldos (7)
+  ['Maruchan', 'Sopa res', 'Caja 12 pzs', 240],
+  ['Maruchan', 'Sopa pollo', 'Caja 12 pzs', 240],
+  ['Maruchan', 'Sopa camarón', 'Caja 12 pzs', 240],
+  ['Maruchan', 'Sopa habanero', 'Caja 12 pzs', 240],
+  ['Knorr', 'Caldo de pollo 200 g', 'Pieza', 64],
+  ['Knorr', 'Caldo de res 200 g', 'Pieza', 64],
+  ['Knorr', 'Sopa de fideo', 'Caja 12 pzs', 96],
+
+  // Salsas y enlatados (15)
+  ['McCormick', 'Catsup 1 L', 'Caja 6 pzs', 290],
+  ['McCormick', 'Mayonesa 1 L', 'Caja 6 pzs', 360],
+  ['McCormick', 'Mostaza 750 ml', 'Pieza', 58],
+  ['McCormick', 'Vinagre blanco 1 L', 'Pieza', 32],
+  ['Herdez', 'Salsa verde 230 g', 'Caja 12 pzs', 192],
+  ['Herdez', 'Salsa roja 230 g', 'Caja 12 pzs', 192],
+  ['Herdez', 'Chiles jalapeños 380 g', 'Caja 12 pzs', 252],
+  ['Valentina', 'Salsa picante 370 ml', 'Caja 12 pzs', 192],
+  ['Valentina', 'Salsa negra 370 ml', 'Caja 12 pzs', 198],
+  ['Tajín', 'Clásico 142 g', 'Caja 12 pzs', 168],
+  ['Tajín', 'Bajo en sodio 142 g', 'Caja 12 pzs', 168],
+  ['La Costeña', 'Frijoles negros 580 g', 'Caja 12 pzs', 216],
+  ['La Costeña', 'Frijoles bayos 580 g', 'Caja 12 pzs', 216],
+  ['La Costeña', 'Chiles en escabeche 380 g', 'Caja 12 pzs', 240],
+  ['La Costeña', 'Chipotles adobados 215 g', 'Caja 12 pzs', 228],
+
+  // Café y cereales (10)
+  ['Nescafé', 'Clásico 200 g', 'Pieza', 138],
+  ['Nescafé', 'Decaf 100 g', 'Pieza', 98],
+  ['Nescafé', 'Capuccino sobre', 'Caja 24 sobres', 216],
+  ['Nescafé', 'Latte sobre', 'Caja 24 sobres', 216],
+  ['Punta del Cielo', 'Tostado molido 250 g', 'Pieza', 168],
+  ['Punta del Cielo', 'Soluble 100 g', 'Pieza', 142],
+  ['Zucaritas', 'Caja 510 g', 'Pieza', 92],
+  ['Choco Krispis', 'Caja 380 g', 'Pieza', 88],
+  ['Corn Flakes', 'Caja 380 g', 'Pieza', 78],
+  ["Kellogg's", 'Special K 380 g', 'Pieza', 96],
+
+  // Cervezas (8)
+  ['Modelo', 'Especial 355 ml', 'Caja 24 pzs', 520],
+  ['Modelo', 'Negra 355 ml', 'Caja 24 pzs', 540],
+  ['Corona', 'Extra 355 ml', 'Caja 24 pzs', 520],
+  ['Corona', 'Familiar 1.2 L', 'Caja 12 pzs', 540],
+  ['Tecate', 'Original 473 ml', 'Caja 18 pzs', 480],
+  ['Victoria', '355 ml', 'Caja 24 pzs', 480],
+  ['Indio', '355 ml', 'Caja 24 pzs', 480],
+  ['Heineken', '355 ml', 'Caja 24 pzs', 580],
+
+  // Despensa varios (2)
+  ['Tang', 'Naranja 1 kg', 'Bolsa', 110],
+  ['Suavitel', 'Suavizante 850 ml', 'Pieza', 64],
 ];
+
+const CM_PRODUCTOS = _CM_RAW.map(([marca, nombre, presentacion, precio], i) => {
+  const [color, textColor] = _CM_BRAND_STYLE[marca] || _CM_PAL.cream;
+  const categoria = _CM_BRAND_CATEGORIA[marca] || 'Despensa';
+  return { id: 1000 + i, tienda: 'CARNEMART', marca, categoria, nombre, presentacion, precio, color, textColor };
+});
+
+const PRODUCTOS = [...BAFAR_PRODUCTOS, ...CM_PRODUCTOS];
 
 const VIDEOS = [
   { id: 1, titulo: 'Cómo hacer la hamburguesa perfecta', categoria: 'COCINA', duracion: '12:40', vistas: 1840, autor: 'Chef Roberto Méndez', color: '#fce8ec', textColor: '#8b0a1f', nivel: 'Básico' },
@@ -74,6 +276,9 @@ export default function BafarAliadosDashboard() {
   const [cart, setCart] = useState({});
   const [puntos, setPuntos] = useState(2840);
   const [filtroVideo, setFiltroVideo] = useState('TODOS');
+  const [filtroTienda, setFiltroTienda] = useState(null);
+  const [filtroCategoria, setFiltroCategoria] = useState('TODAS');
+  const [busquedaPedidos, setBusquedaPedidos] = useState('');
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [showSerieModal, setShowSerieModal] = useState(false);
   const [showModeloModal, setShowModeloModal] = useState(false);
@@ -189,6 +394,8 @@ export default function BafarAliadosDashboard() {
   const cartTotal = cartItems.reduce((s, i) => s + i.precio * i.qty, 0);
   const cartCount = cartItems.reduce((s, i) => s + i.qty, 0);
   const puntosGanados = Math.round(cartTotal / 10);
+  const costoEnPuntos = cartTotal * 10;
+  const puntosAlcanzan = puntos >= costoEnPuntos;
 
   const addToCart = (id) => setCart(c => ({ ...c, [id]: (c[id] || 0) + 1 }));
   const removeFromCart = (id) => setCart(c => ({ ...c, [id]: Math.max(0, (c[id] || 0) - 1) }));
@@ -196,6 +403,14 @@ export default function BafarAliadosDashboard() {
   const confirmOrder = () => {
     if (cartCount === 0) return;
     setPuntos(p => p + puntosGanados);
+    setCart({});
+    setOrderConfirmed(true);
+    setTimeout(() => setOrderConfirmed(false), 2500);
+  };
+
+  const payWithPoints = () => {
+    if (cartCount === 0 || !puntosAlcanzan) return;
+    setPuntos(p => p - costoEnPuntos);
     setCart({});
     setOrderConfirmed(true);
     setTimeout(() => setOrderConfirmed(false), 2500);
@@ -278,7 +493,6 @@ export default function BafarAliadosDashboard() {
             { id: 'inventario', label: 'Mis Inventarios', icon: Boxes },
             { id: 'pedidos', label: 'Bienvenido a BAFAR', icon: ShoppingCart },
             { id: 'academy', label: 'BAFAR Academy', icon: GraduationCap },
-            { id: 'alertas', label: 'Alertas inteligentes', icon: Bell },
           ].map(t => {
             const Icon = t.icon;
             const active = tab === t.id;
@@ -291,9 +505,6 @@ export default function BafarAliadosDashboard() {
                 aria-pressed={active}
                 style={{ position: 'relative' }}
               >
-                {t.id === 'alertas' && (
-                  <span className="bf-applink-badge">{invRojo.length + 3}</span>
-                )}
                 <span className="bf-applink-icon">
                   <Icon size={22} color={active ? 'white' : BRAND.red} strokeWidth={2.25} />
                 </span>
@@ -911,7 +1122,6 @@ export default function BafarAliadosDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
               <div>
                 <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>Bienvenido a BAFAR</h1>
-                <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>Levanta tu pedido directamente con planta. Entrega en 24-48 hrs.</p>
               </div>
               <div style={{ background: BRAND.ink, padding: '14px 20px', borderRadius: 14, display: 'flex', alignItems: 'center', gap: 14 }}>
                 <Award size={22} color="#f5d76e" />
@@ -926,54 +1136,163 @@ export default function BafarAliadosDashboard() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20 }}>
               {/* PRODUCTOS */}
               <div>
-                <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-                  {['Todas las marcas', 'BAFAR Carnes', 'BURR', 'SABORI', 'LA CHONA', 'CAPERUCITA', 'MONTECILLO'].map((m, i) => (
-                    <span key={i} className="bf-pill" style={{
-                      background: i === 0 ? BRAND.ink : 'white',
-                      color: i === 0 ? 'white' : BRAND.muted,
-                      border: i === 0 ? 'none' : `1px solid ${BRAND.border}`,
-                      cursor: 'pointer', padding: '6px 12px'
-                    }}>{m}</span>
-                  ))}
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
-                  {PRODUCTOS.map(p => {
-                    const qty = cart[p.id] || 0;
+                {/* Selector de tienda: BAFAR vs CARNEMART */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+                  {[
+                    { id: 'BAFAR', label: 'BAFAR', sub: 'Marcas propias, directo de planta', accent: BRAND.red },
+                    { id: 'CARNEMART', label: 'CARNEMART', sub: 'Abarrotes, refrescos y snacks', accent: '#1e5fa8' },
+                  ].map(t => {
+                    const active = filtroTienda === t.id;
                     return (
-                      <div key={p.id} className="bf-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ background: p.color, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                          <div style={{ fontSize: 14, fontWeight: 800, color: p.textColor, letterSpacing: '0.5px' }}>{p.marca}</div>
-                          {qty > 0 && (
-                            <div style={{ position: 'absolute', top: 8, right: 8, background: BRAND.red, color: 'white', width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>{qty}</div>
-                          )}
-                        </div>
-                        <div style={{ padding: 14, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                          <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>{p.nombre}</div>
-                          <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 3 }}>{p.presentacion}</div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, paddingTop: 12, borderTop: `1px solid ${BRAND.border}` }}>
-                            <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.3px' }}>${p.precio.toLocaleString('es-MX')}</span>
-                            {qty === 0 ? (
-                              <button onClick={() => addToCart(p.id)} style={{ background: BRAND.red, color: 'white', border: 'none', width: 28, height: 28, borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Plus size={14} />
-                              </button>
-                            ) : (
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                <button onClick={() => removeFromCart(p.id)} style={{ background: BRAND.cream, border: 'none', width: 24, height: 24, borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                  <Minus size={12} />
-                                </button>
-                                <span style={{ fontSize: 13, fontWeight: 600, minWidth: 16, textAlign: 'center' }}>{qty}</span>
-                                <button onClick={() => addToCart(p.id)} style={{ background: BRAND.red, color: 'white', border: 'none', width: 24, height: 24, borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                  <Plus size={12} />
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => { setFiltroTienda(t.id); setFiltroCategoria('TODAS'); }}
+                        style={{
+                          padding: '14px 16px',
+                          borderRadius: 12,
+                          border: active ? `2px solid ${t.accent}` : `1px solid ${BRAND.border}`,
+                          background: active ? '#fff' : BRAND.paper,
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit',
+                          boxShadow: active ? '0 4px 12px rgba(0,0,0,0.06)' : 'none',
+                          transition: 'all 0.15s',
+                        }}
+                      >
+                        <div style={{ fontSize: 15, fontWeight: 800, color: active ? t.accent : BRAND.ink, letterSpacing: 0.3 }}>{t.label}</div>
+                        <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 2 }}>{t.sub}</div>
+                      </button>
                     );
                   })}
                 </div>
+
+                {/* Estado vacío cuando no hay tienda seleccionada */}
+                {!filtroTienda && (
+                  <div className="bf-card" style={{ padding: 36, textAlign: 'center', color: BRAND.muted }}>
+                    <ShoppingCart size={28} color={BRAND.muted} style={{ marginBottom: 10, opacity: 0.6 }} />
+                    <div style={{ fontSize: 14, fontWeight: 700, color: BRAND.ink, marginBottom: 4 }}>Elige dónde quieres comprar</div>
+                    <div style={{ fontSize: 12 }}>Toca <strong>BAFAR</strong> para ver las marcas de planta o <strong>CARNEMART</strong> para abarrotes y refrescos.</div>
+                  </div>
+                )}
+
+                {filtroTienda && (() => {
+                  const q = busquedaPedidos.trim().toLowerCase();
+                  const enTienda = PRODUCTOS.filter(p => p.tienda === filtroTienda);
+                  const productosFiltrados = enTienda.filter(p =>
+                    (filtroCategoria === 'TODAS' || p.categoria === filtroCategoria) &&
+                    (q === '' || p.nombre.toLowerCase().includes(q) || p.marca.toLowerCase().includes(q))
+                  );
+
+                  return (
+                    <>
+                      {/* Barra de búsqueda */}
+                      <div style={{ position: 'relative', marginBottom: 12 }}>
+                        <Search size={16} color={BRAND.muted} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} />
+                        <input
+                          type="text"
+                          value={busquedaPedidos}
+                          onChange={e => setBusquedaPedidos(e.target.value)}
+                          placeholder={`Buscar en ${filtroTienda} (producto o marca)`}
+                          style={{
+                            width: '100%',
+                            padding: '10px 36px 10px 38px',
+                            borderRadius: 10,
+                            border: `1px solid ${BRAND.border}`,
+                            background: 'white',
+                            fontSize: 13,
+                            fontFamily: 'inherit',
+                            outline: 'none',
+                            boxSizing: 'border-box',
+                          }}
+                        />
+                        {busquedaPedidos && (
+                          <button
+                            type="button"
+                            onClick={() => setBusquedaPedidos('')}
+                            style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: BRAND.muted, padding: 4, display: 'flex' }}
+                            aria-label="Limpiar búsqueda"
+                          >
+                            <X size={14} />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Chips de categoría para la tienda seleccionada */}
+                      <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+                        {['TODAS', ...Array.from(new Set(enTienda.map(p => p.categoria)))].map(c => {
+                          const active = filtroCategoria === c;
+                          return (
+                            <button
+                              key={c}
+                              type="button"
+                              onClick={() => setFiltroCategoria(c)}
+                              className="bf-pill"
+                              style={{
+                                background: active ? BRAND.ink : 'white',
+                                color: active ? 'white' : BRAND.muted,
+                                border: active ? 'none' : `1px solid ${BRAND.border}`,
+                                cursor: 'pointer',
+                                padding: '6px 12px',
+                                fontFamily: 'inherit',
+                              }}
+                            >
+                              {c === 'TODAS' ? `Todas las categorías (${filtroTienda})` : c}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div style={{ fontSize: 11, color: BRAND.muted, marginBottom: 10 }}>
+                        Mostrando {productosFiltrados.length} de {enTienda.length} productos
+                      </div>
+
+                      {productosFiltrados.length === 0 ? (
+                        <div className="bf-card" style={{ padding: 28, textAlign: 'center', color: BRAND.muted, fontSize: 13 }}>
+                          No encontramos productos que coincidan con tu búsqueda.
+                        </div>
+                      ) : (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
+                          {productosFiltrados.map(p => {
+                            const qty = cart[p.id] || 0;
+                            return (
+                              <div key={p.id} className="bf-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ background: p.color, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                                  <div style={{ fontSize: 14, fontWeight: 800, color: p.textColor, letterSpacing: '0.5px' }}>{p.marca}</div>
+                                  {qty > 0 && (
+                                    <div style={{ position: 'absolute', top: 8, right: 8, background: BRAND.red, color: 'white', width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>{qty}</div>
+                                  )}
+                                </div>
+                                <div style={{ padding: 14, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                  <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>{p.nombre}</div>
+                                  <div style={{ fontSize: 11, color: BRAND.muted, marginTop: 3 }}>{p.presentacion}</div>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, paddingTop: 12, borderTop: `1px solid ${BRAND.border}` }}>
+                                    <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.3px' }}>${p.precio.toLocaleString('es-MX')}</span>
+                                    {qty === 0 ? (
+                                      <button onClick={() => addToCart(p.id)} style={{ background: BRAND.red, color: 'white', border: 'none', width: 28, height: 28, borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Plus size={14} />
+                                      </button>
+                                    ) : (
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                        <button onClick={() => removeFromCart(p.id)} style={{ background: BRAND.cream, border: 'none', width: 24, height: 24, borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                          <Minus size={12} />
+                                        </button>
+                                        <span style={{ fontSize: 13, fontWeight: 600, minWidth: 16, textAlign: 'center' }}>{qty}</span>
+                                        <button onClick={() => addToCart(p.id)} style={{ background: BRAND.red, color: 'white', border: 'none', width: 24, height: 24, borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                          <Plus size={12} />
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
 
               {/* CARRITO */}
@@ -1023,6 +1342,40 @@ export default function BafarAliadosDashboard() {
                       <Award size={12} />
                       Ganarás {puntosGanados.toLocaleString('es-MX')} puntos con este pedido
                     </div>
+                    <button
+                      type="button"
+                      onClick={payWithPoints}
+                      disabled={!puntosAlcanzan}
+                      style={{
+                        width: '100%',
+                        background: puntosAlcanzan ? BRAND.ink : '#e5e0d3',
+                        color: puntosAlcanzan ? '#f5d76e' : BRAND.muted,
+                        border: 'none',
+                        padding: '12px 16px',
+                        borderRadius: 10,
+                        fontWeight: 700,
+                        fontSize: 13,
+                        letterSpacing: 0.3,
+                        cursor: puntosAlcanzan ? 'pointer' : 'not-allowed',
+                        fontFamily: 'inherit',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        marginBottom: 10,
+                      }}
+                    >
+                      <Award size={14} color={puntosAlcanzan ? '#f5d76e' : BRAND.muted} />
+                      PAGAR CON BAFAR PUNTOS
+                      <span style={{ fontSize: 11, fontWeight: 600, opacity: 0.85 }}>
+                        ({costoEnPuntos.toLocaleString('es-MX')} pts)
+                      </span>
+                    </button>
+                    {!puntosAlcanzan && (
+                      <div style={{ fontSize: 11, color: BRAND.muted, textAlign: 'center', marginBottom: 10 }}>
+                        Te faltan {(costoEnPuntos - puntos).toLocaleString('es-MX')} puntos para canjear este pedido.
+                      </div>
+                    )}
                     <button className="bf-btn-primary" onClick={confirmOrder} style={{ width: '100%' }}>
                       Confirmar pedido
                     </button>
@@ -1175,82 +1528,6 @@ export default function BafarAliadosDashboard() {
           </div>
         )}
 
-        {/* TAB: ALERTAS INTELIGENTES */}
-        {tab === 'alertas' && (
-          <div className="bf-anim-fade">
-            <div style={{ marginBottom: 24 }}>
-              <h1 className="bf-page-title">Alertas inteligentes</h1>
-              <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>BAFAR observa tus números y te avisa antes de que los problemas cuesten dinero.</p>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {invRojo.length === 0 ? (
-                <div style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                    <Check size={14} color={BRAND.green} />
-                    <span className="bf-pill" style={{ background: BRAND.green, color: 'white' }}>INVENTARIO OK</span>
-                  </div>
-                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Todo tu inventario está en niveles sanos</div>
-                  <div style={{ fontSize: 13, color: '#0a4a36' }}>Ningún producto está por debajo del mínimo. Revisa Mis Inventarios para mantenerlo así.</div>
-                </div>
-              ) : invRojo.map(item => (
-                <div key={`alert-${item.id}`} className="bf-grid-alert" style={{ background: '#fff5f5', borderLeft: `4px solid ${BRAND.red}`, borderRadius: '0 12px 12px 0', padding: 'clamp(14px, 4vw, 18px) clamp(14px, 4vw, 22px)' }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                      <AlertCircle size={14} color={BRAND.red} />
-                      <span className="bf-pill" style={{ background: BRAND.red, color: 'white' }}>URGENTE · INVENTARIO{item.esBafar ? ' · BAFAR' : ''}</span>
-                    </div>
-                    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Te quedan {item.stock} {item.unidad} de {item.nombre}</div>
-                    <div style={{ fontSize: 13, color: '#5a1212' }}>Estás por debajo de tu mínimo ({item.minStock} {item.unidad}). {item.esBafar ? 'Pídelo directo a BAFAR antes de quedarte sin él.' : 'Reordena con tu proveedor para evitar perder ventas.'}</div>
-                  </div>
-                  <button type="button" className="bf-btn-primary" onClick={() => setTab(item.esBafar ? 'pedidos' : 'inventario')}>{item.esBafar ? 'Pedir a BAFAR →' : 'Ver inventario →'}</button>
-                </div>
-              ))}
-
-              <div style={{ background: '#fff9eb', borderLeft: `4px solid ${BRAND.amber}`, borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                  <TrendingDown size={14} color={BRAND.amber} />
-                  <span className="bf-pill" style={{ background: BRAND.amber, color: 'white' }}>RENTABILIDAD</span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Tu margen bajó 8% esta semana</div>
-                <div style={{ fontSize: 13, color: '#6b4f05', marginBottom: 12 }}>Tus costos subieron pero no actualizaste precios. Mira el video &quot;Cómo fijar tus precios de menú&quot; para corregir esto en 22 minutos.</div>
-                <button type="button" onClick={() => setTab('academy')} style={{ background: 'white', color: BRAND.amber, border: `1px solid ${BRAND.amber}`, padding: '8px 14px', borderRadius: 8, fontWeight: 600, cursor: 'pointer', fontSize: 12 }}>Ver video →</button>
-              </div>
-
-              <div className="bf-grid-alert" style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: 'clamp(14px, 4vw, 18px) clamp(14px, 4vw, 22px)' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                    <Award size={14} color={BRAND.green} />
-                    <span className="bf-pill" style={{ background: BRAND.green, color: 'white' }}>OPORTUNIDAD</span>
-                  </div>
-                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Tienes {puntos.toLocaleString('es-MX')} puntos sin usar</div>
-                  <div style={{ fontSize: 13, color: '#0a4a36' }}>Equivalen a una caja de queso Sabori manchego gratis en tu próximo pedido. No los dejes ir.</div>
-                </div>
-                <button type="button" onClick={() => setTab('pedidos')} style={{ background: BRAND.green, color: 'white', border: 'none', padding: '10px 18px', borderRadius: 10, fontWeight: 600, cursor: 'pointer', fontSize: 13 }}>Canjear →</button>
-              </div>
-
-              <div style={{ background: '#eef3fb', borderLeft: '4px solid #1e5fa8', borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                  <TrendingUp size={14} color="#1e5fa8" />
-                  <span className="bf-pill" style={{ background: '#1e5fa8', color: 'white' }}>TENDENCIA DETECTADA</span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Los lunes vendes 30% menos que el promedio</div>
-                <div style={{ fontSize: 13, color: '#0a3470' }}>Promedio de los últimos 8 lunes vs resto de la semana. Considera lanzar una promoción 2x1 los lunes para activar el día más débil de tu semana.</div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: 28, padding: 'clamp(14px, 4vw, 20px)', background: BRAND.cream, borderRadius: 14 }} className="bf-tip-row">
-              <div style={{ width: 44, height: 44, background: BRAND.red, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Zap size={20} color="white" />
-              </div>
-              <div className="bf-tip-row-grow">
-                <div style={{ fontSize: 14, fontWeight: 700 }}>BAFAR convierte tus datos en decisiones</div>
-                <div style={{ fontSize: 12, color: BRAND.muted, marginTop: 2 }}>Cada minuto que un problema no se resuelve en tu negocio, te está costando dinero. Por eso te avisamos antes.</div>
-              </div>
-            </div>
-          </div>
-        )}
-
       </main>
 
       {/* FOOTER */}
@@ -1293,6 +1570,30 @@ export default function BafarAliadosDashboard() {
                   </button>
                 </div>
               ))}
+            </div>
+            <div style={{ padding: '14px 20px', borderTop: `1px solid ${BRAND.border}`, background: 'white', display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                onClick={() => setShowSerieModal(false)}
+                style={{
+                  background: `linear-gradient(135deg, ${BRAND.ink} 0%, ${BRAND.amber} 100%)`,
+                  color: 'white',
+                  border: 'none',
+                  padding: '12px 22px',
+                  borderRadius: 10,
+                  fontWeight: 800,
+                  fontSize: 13,
+                  letterSpacing: 0.4,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  boxShadow: '0 4px 12px rgba(184, 134, 11, 0.25)',
+                }}
+              >
+                IR A LA APP <ChevronRight size={16} />
+              </button>
             </div>
           </div>
         </div>,
