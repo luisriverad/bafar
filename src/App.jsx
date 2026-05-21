@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  TrendingUp, TrendingDown, ShoppingCart, Play, Home,
+  TrendingUp, TrendingDown, ShoppingCart, Play, Bell, Home,
   Package, GraduationCap, AlertCircle, Plus, Minus, Check, X,
   DollarSign, Wallet, Boxes, Award, Clock, Users, Search,
   Filter, ChevronRight, Flame, Target, BookOpen, Zap,
@@ -223,12 +223,30 @@ export default function BafarAliadosDashboard() {
         .bf-applink-icon { width: 36px; height: 36px; border-radius: 10px; background: ${BRAND.paper}; display: flex; align-items: center; justify-content: center; }
         .bf-applink-active .bf-applink-icon { background: rgba(255,255,255,0.18); }
         .bf-applink-label { font-size: 13px; font-weight: 600; text-align: center; line-height: 1.2; }
-        .bf-btn-primary { background: ${BRAND.red}; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+        .bf-btn-primary { background: ${BRAND.red}; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.15s; min-height: 44px; }
         .bf-btn-primary:hover { background: ${BRAND.redDark}; }
         .bf-btn-primary:disabled { background: #ccc; cursor: not-allowed; }
         .bf-pill { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
         .bf-anim-fade { animation: fade 0.3s ease; }
         @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .bf-applink-nav { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media (min-width: 640px) { .bf-applink-nav { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+        @media (min-width: 1024px) { .bf-applink-nav { grid-template-columns: repeat(6, 1fr); } }
+        .bf-applink-badge { position: absolute; top: 8px; right: 8px; background: ${BRAND.red}; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; font-weight: 700; }
+        .bf-main { padding: clamp(12px, 4vw, 28px); max-width: 1280px; margin: 0 auto; width: 100%; }
+        .bf-footer { border-top: 1px solid ${BRAND.border}; padding: 16px clamp(12px, 4vw, 28px); text-align: center; font-size: 11px; color: ${BRAND.muted}; background: white; }
+        .bf-page-title { font-size: clamp(1.15rem, 4.5vw, 26px); font-weight: 700; margin: 0; letter-spacing: -0.5px; line-height: 1.2; }
+        .bf-grid-kpi3 { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
+        @media (min-width: 900px) { .bf-grid-kpi3 { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .bf-grid-kpi3 { grid-template-columns: repeat(3, 1fr); } }
+        .bf-grid-alert { display: grid; grid-template-columns: 1fr; gap: 14px; align-items: start; }
+        .bf-grid-alert > button { width: 100%; justify-self: stretch; }
+        @media (min-width: 720px) {
+          .bf-grid-alert { grid-template-columns: 1fr auto; align-items: center; }
+          .bf-grid-alert > button { width: auto; justify-self: end; }
+        }
+        .bf-tip-row { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+        .bf-tip-row-grow { flex: 1; min-width: 0; }
       `}</style>
 
       {/* HEADER */}
@@ -253,23 +271,29 @@ export default function BafarAliadosDashboard() {
 
       {/* TABS — botones tipo app (tiles grandes, alto contraste, área táctil amplia para usuarios low-tech) */}
       <nav style={{ background: 'white', borderBottom: `1px solid ${BRAND.border}`, padding: '18px 28px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
+        <div className="bf-applink-nav">
           {[
             { id: 'negocio', label: 'Tablero de Control', icon: Home },
             { id: 'capturar', label: 'Capturar día', icon: ClipboardList },
             { id: 'inventario', label: 'Mis Inventarios', icon: Boxes },
             { id: 'pedidos', label: 'Bienvenido a BAFAR', icon: ShoppingCart },
             { id: 'academy', label: 'BAFAR Academy', icon: GraduationCap },
+            { id: 'alertas', label: 'Alertas inteligentes', icon: Bell },
           ].map(t => {
             const Icon = t.icon;
             const active = tab === t.id;
             return (
               <button
                 key={t.id}
+                type="button"
                 onClick={() => setTab(t.id)}
                 className={`bf-applink ${active ? 'bf-applink-active' : ''}`}
                 aria-pressed={active}
+                style={{ position: 'relative' }}
               >
+                {t.id === 'alertas' && (
+                  <span className="bf-applink-badge">{invRojo.length + 3}</span>
+                )}
                 <span className="bf-applink-icon">
                   <Icon size={22} color={active ? 'white' : BRAND.red} strokeWidth={2.25} />
                 </span>
@@ -280,7 +304,7 @@ export default function BafarAliadosDashboard() {
         </div>
       </nav>
 
-      <main style={{ padding: '28px', maxWidth: 1280, margin: '0 auto' }}>
+      <main className="bf-main">
 
         {/* ============================================ */}
         {/* TAB 1: MI NEGOCIO                              */}
@@ -293,7 +317,7 @@ export default function BafarAliadosDashboard() {
             </div>
 
             {/* KPI CARDS */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginBottom: 24 }}>
+            <div className="bf-grid-kpi3">
               <div className="bf-card" style={{ padding: 18 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                   <DollarSign size={18} color={BRAND.muted} />
@@ -1151,10 +1175,86 @@ export default function BafarAliadosDashboard() {
           </div>
         )}
 
+        {/* TAB: ALERTAS INTELIGENTES */}
+        {tab === 'alertas' && (
+          <div className="bf-anim-fade">
+            <div style={{ marginBottom: 24 }}>
+              <h1 className="bf-page-title">Alertas inteligentes</h1>
+              <p style={{ fontSize: 13, color: BRAND.muted, margin: '4px 0 0' }}>BAFAR observa tus números y te avisa antes de que los problemas cuesten dinero.</p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {invRojo.length === 0 ? (
+                <div style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <Check size={14} color={BRAND.green} />
+                    <span className="bf-pill" style={{ background: BRAND.green, color: 'white' }}>INVENTARIO OK</span>
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Todo tu inventario está en niveles sanos</div>
+                  <div style={{ fontSize: 13, color: '#0a4a36' }}>Ningún producto está por debajo del mínimo. Revisa Mis Inventarios para mantenerlo así.</div>
+                </div>
+              ) : invRojo.map(item => (
+                <div key={`alert-${item.id}`} className="bf-grid-alert" style={{ background: '#fff5f5', borderLeft: `4px solid ${BRAND.red}`, borderRadius: '0 12px 12px 0', padding: 'clamp(14px, 4vw, 18px) clamp(14px, 4vw, 22px)' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                      <AlertCircle size={14} color={BRAND.red} />
+                      <span className="bf-pill" style={{ background: BRAND.red, color: 'white' }}>URGENTE · INVENTARIO{item.esBafar ? ' · BAFAR' : ''}</span>
+                    </div>
+                    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Te quedan {item.stock} {item.unidad} de {item.nombre}</div>
+                    <div style={{ fontSize: 13, color: '#5a1212' }}>Estás por debajo de tu mínimo ({item.minStock} {item.unidad}). {item.esBafar ? 'Pídelo directo a BAFAR antes de quedarte sin él.' : 'Reordena con tu proveedor para evitar perder ventas.'}</div>
+                  </div>
+                  <button type="button" className="bf-btn-primary" onClick={() => setTab(item.esBafar ? 'pedidos' : 'inventario')}>{item.esBafar ? 'Pedir a BAFAR →' : 'Ver inventario →'}</button>
+                </div>
+              ))}
+
+              <div style={{ background: '#fff9eb', borderLeft: `4px solid ${BRAND.amber}`, borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <TrendingDown size={14} color={BRAND.amber} />
+                  <span className="bf-pill" style={{ background: BRAND.amber, color: 'white' }}>RENTABILIDAD</span>
+                </div>
+                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Tu margen bajó 8% esta semana</div>
+                <div style={{ fontSize: 13, color: '#6b4f05', marginBottom: 12 }}>Tus costos subieron pero no actualizaste precios. Mira el video &quot;Cómo fijar tus precios de menú&quot; para corregir esto en 22 minutos.</div>
+                <button type="button" onClick={() => setTab('academy')} style={{ background: 'white', color: BRAND.amber, border: `1px solid ${BRAND.amber}`, padding: '8px 14px', borderRadius: 8, fontWeight: 600, cursor: 'pointer', fontSize: 12 }}>Ver video →</button>
+              </div>
+
+              <div className="bf-grid-alert" style={{ background: '#e8f5ee', borderLeft: `4px solid ${BRAND.green}`, borderRadius: '0 12px 12px 0', padding: 'clamp(14px, 4vw, 18px) clamp(14px, 4vw, 22px)' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <Award size={14} color={BRAND.green} />
+                    <span className="bf-pill" style={{ background: BRAND.green, color: 'white' }}>OPORTUNIDAD</span>
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Tienes {puntos.toLocaleString('es-MX')} puntos sin usar</div>
+                  <div style={{ fontSize: 13, color: '#0a4a36' }}>Equivalen a una caja de queso Sabori manchego gratis en tu próximo pedido. No los dejes ir.</div>
+                </div>
+                <button type="button" onClick={() => setTab('pedidos')} style={{ background: BRAND.green, color: 'white', border: 'none', padding: '10px 18px', borderRadius: 10, fontWeight: 600, cursor: 'pointer', fontSize: 13 }}>Canjear →</button>
+              </div>
+
+              <div style={{ background: '#eef3fb', borderLeft: '4px solid #1e5fa8', borderRadius: '0 12px 12px 0', padding: '18px 22px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <TrendingUp size={14} color="#1e5fa8" />
+                  <span className="bf-pill" style={{ background: '#1e5fa8', color: 'white' }}>TENDENCIA DETECTADA</span>
+                </div>
+                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Los lunes vendes 30% menos que el promedio</div>
+                <div style={{ fontSize: 13, color: '#0a3470' }}>Promedio de los últimos 8 lunes vs resto de la semana. Considera lanzar una promoción 2x1 los lunes para activar el día más débil de tu semana.</div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: 28, padding: 'clamp(14px, 4vw, 20px)', background: BRAND.cream, borderRadius: 14 }} className="bf-tip-row">
+              <div style={{ width: 44, height: 44, background: BRAND.red, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Zap size={20} color="white" />
+              </div>
+              <div className="bf-tip-row-grow">
+                <div style={{ fontSize: 14, fontWeight: 700 }}>BAFAR convierte tus datos en decisiones</div>
+                <div style={{ fontSize: 12, color: BRAND.muted, marginTop: 2 }}>Cada minuto que un problema no se resuelve en tu negocio, te está costando dinero. Por eso te avisamos antes.</div>
+              </div>
+            </div>
+          </div>
+        )}
+
       </main>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: `1px solid ${BRAND.border}`, padding: '20px 28px', textAlign: 'center', fontSize: 11, color: BRAND.muted, background: 'white' }}>
+      <footer className="bf-footer">
         BAFAR Aliados · Tu socio estratégico de cocina · v1.0 · www.bafar.com.mx
         <div style={{ marginTop: 6, fontSize: 11, fontWeight: 600, color: BRAND.ink }}>Powered by AXON B2B</div>
       </footer>
